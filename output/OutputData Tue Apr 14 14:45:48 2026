@@ -1,0 +1,129 @@
+{
+    "14:45:48.053270": {
+        "(SGP30) CO2 Level: ": "402ppm",
+        "(SGP30) Total VOC: ": "1ppm",
+        "(BME280) Tempature (Celsius): ": "21.9C",
+        "(BME280) Humidity: ": "72.1rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:45:50.740995": {
+        "(SGP30) CO2 Level: ": "400ppm",
+        "(SGP30) Total VOC: ": "1ppm",
+        "(BME280) Tempature (Celsius): ": "21.9C",
+        "(BME280) Humidity: ": "71.9rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:45:53.418132": {
+        "(SGP30) CO2 Level: ": "405ppm",
+        "(SGP30) Total VOC: ": "8ppm",
+        "(BME280) Tempature (Celsius): ": "21.9C",
+        "(BME280) Humidity: ": "71.9rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:45:56.104449": {
+        "(SGP30) CO2 Level: ": "400ppm",
+        "(SGP30) Total VOC: ": "0ppm",
+        "(BME280) Tempature (Celsius): ": "21.9C",
+        "(BME280) Humidity: ": "72.0rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:45:58.778781": {
+        "(SGP30) CO2 Level: ": "413ppm",
+        "(SGP30) Total VOC: ": "1ppm",
+        "(BME280) Tempature (Celsius): ": "21.9C",
+        "(BME280) Humidity: ": "72.0rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:46:01.470296": {
+        "(SGP30) CO2 Level: ": "409ppm",
+        "(SGP30) Total VOC: ": "3ppm",
+        "(BME280) Tempature (Celsius): ": "21.9C",
+        "(BME280) Humidity: ": "71.9rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:46:04.143908": {
+        "(SGP30) CO2 Level: ": "402ppm",
+        "(SGP30) Total VOC: ": "5ppm",
+        "(BME280) Tempature (Celsius): ": "21.9C",
+        "(BME280) Humidity: ": "71.8rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:46:06.827779": {
+        "(SGP30) CO2 Level: ": "401ppm",
+        "(SGP30) Total VOC: ": "4ppm",
+        "(BME280) Tempature (Celsius): ": "21.9C",
+        "(BME280) Humidity: ": "71.9rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:46:09.503030": {
+        "(SGP30) CO2 Level: ": "402ppm",
+        "(SGP30) Total VOC: ": "5ppm",
+        "(BME280) Tempature (Celsius): ": "21.9C",
+        "(BME280) Humidity: ": "71.9rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:46:12.187758": {
+        "(SGP30) CO2 Level: ": "401ppm",
+        "(SGP30) Total VOC: ": "6ppm",
+        "(BME280) Tempature (Celsius): ": "21.9C",
+        "(BME280) Humidity: ": "72.0rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:46:14.861667": {
+        "(SGP30) CO2 Level: ": "400ppm",
+        "(SGP30) Total VOC: ": "6ppm",
+        "(BME280) Tempature (Celsius): ": "21.9C",
+        "(BME280) Humidity: ": "71.8rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:46:17.546755": {
+        "(SGP30) CO2 Level: ": "400ppm",
+        "(SGP30) Total VOC: ": "1ppm",
+        "(BME280) Tempature (Celsius): ": "21.9C",
+        "(BME280) Humidity: ": "71.8rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:46:20.220378": {
+        "(SGP30) CO2 Level: ": "400ppm",
+        "(SGP30) Total VOC: ": "4ppm",
+        "(BME280) Tempature (Celsius): ": "21.9C",
+        "(BME280) Humidity: ": "71.4rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:46:22.907036": {
+        "(SGP30) CO2 Level: ": "400ppm",
+        "(SGP30) Total VOC: ": "1ppm",
+        "(BME280) Tempature (Celsius): ": "21.9C",
+        "(BME280) Humidity: ": "71.7rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:46:25.596107": {
+        "(SGP30) CO2 Level: ": "404ppm",
+        "(SGP30) Total VOC: ": "4ppm",
+        "(BME280) Tempature (Celsius): ": "21.9C",
+        "(BME280) Humidity: ": "71.6rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:46:28.276263": {
+        "(SGP30) CO2 Level: ": "413ppm",
+        "(SGP30) Total VOC: ": "3ppm",
+        "(BME280) Tempature (Celsius): ": "21.9C",
+        "(BME280) Humidity: ": "71.5rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}

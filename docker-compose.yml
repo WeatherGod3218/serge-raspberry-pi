@@ -1,0 +1,10 @@
+---
+
+services:
+  serge-raspberry-pi:
+    build: .
+    container_name: Serge-Raspberry-Pi
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env

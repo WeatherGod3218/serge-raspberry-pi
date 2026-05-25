@@ -1,0 +1,25 @@
+{
+    "22:31:55.122447": {
+        "(SGP30) CO2 Level: ": "400ppm",
+        "(SGP30) Total VOC: ": "4ppm",
+        "(BME280) Tempature (Celsius): ": "25.1C",
+        "(BME280) Humidity: ": "69.8rh",
+        "(BME280) Pressure: ": "984.8hP"
+    }
+}{
+    "22:31:57.806104": {
+        "(SGP30) CO2 Level: ": "400ppm",
+        "(SGP30) Total VOC: ": "0ppm",
+        "(BME280) Tempature (Celsius): ": "25.1C",
+        "(BME280) Humidity: ": "69.8rh",
+        "(BME280) Pressure: ": "984.7hP"
+    }
+}{
+    "22:32:00.479981": {
+        "(SGP30) CO2 Level: ": "400ppm",
+        "(SGP30) Total VOC: ": "0ppm",
+        "(BME280) Tempature (Celsius): ": "25.1C",
+        "(BME280) Humidity: ": "69.9rh",
+        "(BME280) Pressure: ": "984.7hP"
+    }
+}

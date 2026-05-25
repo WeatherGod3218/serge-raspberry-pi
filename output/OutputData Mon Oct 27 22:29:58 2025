@@ -1,0 +1,529 @@
+{
+    "22:29:58.398861": {
+        "(SGP30) CO2 Level: ": "400ppm",
+        "(SGP30) Total VOC: ": "4ppm",
+        "(BME280) Tempature (Celsius): ": "23.5C",
+        "(BME280) Humidity: ": "40.0rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:30:01.082204": {
+        "(SGP30) CO2 Level: ": "401ppm",
+        "(SGP30) Total VOC: ": "4ppm",
+        "(BME280) Tempature (Celsius): ": "23.5C",
+        "(BME280) Humidity: ": "40.2rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:30:03.758236": {
+        "(SGP30) CO2 Level: ": "407ppm",
+        "(SGP30) Total VOC: ": "2ppm",
+        "(BME280) Tempature (Celsius): ": "23.5C",
+        "(BME280) Humidity: ": "39.8rh",
+        "(BME280) Pressure: ": "989.4hP"
+    }
+}{
+    "22:30:06.432069": {
+        "(SGP30) CO2 Level: ": "409ppm",
+        "(SGP30) Total VOC: ": "6ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "40.2rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:30:09.108717": {
+        "(SGP30) CO2 Level: ": "409ppm",
+        "(SGP30) Total VOC: ": "0ppm",
+        "(BME280) Tempature (Celsius): ": "23.5C",
+        "(BME280) Humidity: ": "40.2rh",
+        "(BME280) Pressure: ": "989.4hP"
+    }
+}{
+    "22:30:11.800853": {
+        "(SGP30) CO2 Level: ": "406ppm",
+        "(SGP30) Total VOC: ": "4ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "40.0rh",
+        "(BME280) Pressure: ": "989.4hP"
+    }
+}{
+    "22:30:14.477938": {
+        "(SGP30) CO2 Level: ": "407ppm",
+        "(SGP30) Total VOC: ": "6ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "40.1rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:30:17.154640": {
+        "(SGP30) CO2 Level: ": "405ppm",
+        "(SGP30) Total VOC: ": "1ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "40.1rh",
+        "(BME280) Pressure: ": "989.4hP"
+    }
+}{
+    "22:30:19.832658": {
+        "(SGP30) CO2 Level: ": "400ppm",
+        "(SGP30) Total VOC: ": "0ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "40.0rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:30:22.512861": {
+        "(SGP30) CO2 Level: ": "400ppm",
+        "(SGP30) Total VOC: ": "0ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "40.2rh",
+        "(BME280) Pressure: ": "989.4hP"
+    }
+}{
+    "22:30:25.188953": {
+        "(SGP30) CO2 Level: ": "406ppm",
+        "(SGP30) Total VOC: ": "2ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "40.0rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:30:27.863481": {
+        "(SGP30) CO2 Level: ": "403ppm",
+        "(SGP30) Total VOC: ": "4ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.9rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:30:30.539287": {
+        "(SGP30) CO2 Level: ": "407ppm",
+        "(SGP30) Total VOC: ": "2ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.9rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:30:33.216310": {
+        "(SGP30) CO2 Level: ": "403ppm",
+        "(SGP30) Total VOC: ": "2ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "40.0rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:30:35.890692": {
+        "(SGP30) CO2 Level: ": "405ppm",
+        "(SGP30) Total VOC: ": "1ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.8rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:30:38.565504": {
+        "(SGP30) CO2 Level: ": "405ppm",
+        "(SGP30) Total VOC: ": "4ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.9rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:30:41.243040": {
+        "(SGP30) CO2 Level: ": "400ppm",
+        "(SGP30) Total VOC: ": "0ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.8rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:30:43.930771": {
+        "(SGP30) CO2 Level: ": "406ppm",
+        "(SGP30) Total VOC: ": "0ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.9rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:30:46.605031": {
+        "(SGP30) CO2 Level: ": "400ppm",
+        "(SGP30) Total VOC: ": "1ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.9rh",
+        "(BME280) Pressure: ": "989.4hP"
+    }
+}{
+    "22:30:49.281962": {
+        "(SGP30) CO2 Level: ": "412ppm",
+        "(SGP30) Total VOC: ": "2ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.9rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:30:51.961532": {
+        "(SGP30) CO2 Level: ": "408ppm",
+        "(SGP30) Total VOC: ": "5ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.8rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:30:54.644172": {
+        "(SGP30) CO2 Level: ": "400ppm",
+        "(SGP30) Total VOC: ": "9ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.9rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:30:57.321212": {
+        "(SGP30) CO2 Level: ": "400ppm",
+        "(SGP30) Total VOC: ": "1ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.6rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:31:00.007388": {
+        "(SGP30) CO2 Level: ": "405ppm",
+        "(SGP30) Total VOC: ": "0ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.8rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:31:02.684159": {
+        "(SGP30) CO2 Level: ": "408ppm",
+        "(SGP30) Total VOC: ": "6ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.9rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:31:05.367318": {
+        "(SGP30) CO2 Level: ": "407ppm",
+        "(SGP30) Total VOC: ": "2ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.9rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:31:08.042000": {
+        "(SGP30) CO2 Level: ": "410ppm",
+        "(SGP30) Total VOC: ": "0ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "40.1rh",
+        "(BME280) Pressure: ": "989.4hP"
+    }
+}{
+    "22:31:10.726268": {
+        "(SGP30) CO2 Level: ": "411ppm",
+        "(SGP30) Total VOC: ": "0ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.9rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:31:13.401489": {
+        "(SGP30) CO2 Level: ": "421ppm",
+        "(SGP30) Total VOC: ": "5ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "38.8rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:31:16.089343": {
+        "(SGP30) CO2 Level: ": "422ppm",
+        "(SGP30) Total VOC: ": "17ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "40.1rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:31:18.766460": {
+        "(SGP30) CO2 Level: ": "413ppm",
+        "(SGP30) Total VOC: ": "5ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.8rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:31:21.454464": {
+        "(SGP30) CO2 Level: ": "404ppm",
+        "(SGP30) Total VOC: ": "5ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.7rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:31:24.131483": {
+        "(SGP30) CO2 Level: ": "407ppm",
+        "(SGP30) Total VOC: ": "7ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "40.8rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:31:26.816669": {
+        "(SGP30) CO2 Level: ": "400ppm",
+        "(SGP30) Total VOC: ": "2ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.8rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:31:29.492900": {
+        "(SGP30) CO2 Level: ": "405ppm",
+        "(SGP30) Total VOC: ": "8ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.9rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:31:32.175742": {
+        "(SGP30) CO2 Level: ": "400ppm",
+        "(SGP30) Total VOC: ": "4ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "40.0rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:31:34.852821": {
+        "(SGP30) CO2 Level: ": "407ppm",
+        "(SGP30) Total VOC: ": "5ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.6rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:31:37.538072": {
+        "(SGP30) CO2 Level: ": "400ppm",
+        "(SGP30) Total VOC: ": "4ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.7rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:31:40.213951": {
+        "(SGP30) CO2 Level: ": "401ppm",
+        "(SGP30) Total VOC: ": "0ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.8rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:31:42.898716": {
+        "(SGP30) CO2 Level: ": "401ppm",
+        "(SGP30) Total VOC: ": "5ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.9rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:31:45.576872": {
+        "(SGP30) CO2 Level: ": "400ppm",
+        "(SGP30) Total VOC: ": "0ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "40.0rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:31:48.261407": {
+        "(SGP30) CO2 Level: ": "420ppm",
+        "(SGP30) Total VOC: ": "8ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.8rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:31:50.938220": {
+        "(SGP30) CO2 Level: ": "412ppm",
+        "(SGP30) Total VOC: ": "7ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.7rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:31:53.622756": {
+        "(SGP30) CO2 Level: ": "420ppm",
+        "(SGP30) Total VOC: ": "7ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.7rh",
+        "(BME280) Pressure: ": "989.4hP"
+    }
+}{
+    "22:31:56.300845": {
+        "(SGP30) CO2 Level: ": "422ppm",
+        "(SGP30) Total VOC: ": "5ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.7rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:31:58.979857": {
+        "(SGP30) CO2 Level: ": "412ppm",
+        "(SGP30) Total VOC: ": "13ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.7rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:32:01.654468": {
+        "(SGP30) CO2 Level: ": "421ppm",
+        "(SGP30) Total VOC: ": "7ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.8rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:32:04.344692": {
+        "(SGP30) CO2 Level: ": "415ppm",
+        "(SGP30) Total VOC: ": "6ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.8rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:32:07.020428": {
+        "(SGP30) CO2 Level: ": "421ppm",
+        "(SGP30) Total VOC: ": "13ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "40.0rh",
+        "(BME280) Pressure: ": "989.4hP"
+    }
+}{
+    "22:32:09.705181": {
+        "(SGP30) CO2 Level: ": "415ppm",
+        "(SGP30) Total VOC: ": "3ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.9rh",
+        "(BME280) Pressure: ": "989.4hP"
+    }
+}{
+    "22:32:12.382447": {
+        "(SGP30) CO2 Level: ": "411ppm",
+        "(SGP30) Total VOC: ": "3ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.9rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:32:15.066231": {
+        "(SGP30) CO2 Level: ": "415ppm",
+        "(SGP30) Total VOC: ": "2ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.8rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:32:17.743313": {
+        "(SGP30) CO2 Level: ": "424ppm",
+        "(SGP30) Total VOC: ": "4ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.7rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:32:20.427912": {
+        "(SGP30) CO2 Level: ": "422ppm",
+        "(SGP30) Total VOC: ": "2ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "40.0rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:32:23.103043": {
+        "(SGP30) CO2 Level: ": "418ppm",
+        "(SGP30) Total VOC: ": "2ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.5rh",
+        "(BME280) Pressure: ": "989.4hP"
+    }
+}{
+    "22:32:25.787193": {
+        "(SGP30) CO2 Level: ": "411ppm",
+        "(SGP30) Total VOC: ": "3ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.8rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:32:28.465223": {
+        "(SGP30) CO2 Level: ": "410ppm",
+        "(SGP30) Total VOC: ": "4ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "40.4rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:32:31.150958": {
+        "(SGP30) CO2 Level: ": "406ppm",
+        "(SGP30) Total VOC: ": "2ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.9rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:32:33.825560": {
+        "(SGP30) CO2 Level: ": "424ppm",
+        "(SGP30) Total VOC: ": "2ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "40.0rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:32:36.513359": {
+        "(SGP30) CO2 Level: ": "427ppm",
+        "(SGP30) Total VOC: ": "4ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.9rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}{
+    "22:32:39.188865": {
+        "(SGP30) CO2 Level: ": "429ppm",
+        "(SGP30) Total VOC: ": "7ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.8rh",
+        "(BME280) Pressure: ": "989.4hP"
+    }
+}{
+    "22:32:41.863614": {
+        "(SGP30) CO2 Level: ": "415ppm",
+        "(SGP30) Total VOC: ": "4ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.8rh",
+        "(BME280) Pressure: ": "989.4hP"
+    }
+}{
+    "22:32:44.537428": {
+        "(SGP30) CO2 Level: ": "412ppm",
+        "(SGP30) Total VOC: ": "7ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.8rh",
+        "(BME280) Pressure: ": "989.4hP"
+    }
+}{
+    "22:32:47.215691": {
+        "(SGP30) CO2 Level: ": "410ppm",
+        "(SGP30) Total VOC: ": "4ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.8rh",
+        "(BME280) Pressure: ": "989.4hP"
+    }
+}{
+    "22:32:49.892958": {
+        "(SGP30) CO2 Level: ": "419ppm",
+        "(SGP30) Total VOC: ": "6ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "40.1rh",
+        "(BME280) Pressure: ": "989.4hP"
+    }
+}{
+    "22:32:52.569269": {
+        "(SGP30) CO2 Level: ": "402ppm",
+        "(SGP30) Total VOC: ": "1ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "39.9rh",
+        "(BME280) Pressure: ": "989.3hP"
+    }
+}

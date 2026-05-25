@@ -1,0 +1,129 @@
+{
+    "14:49:42.060960": {
+        "(SGP30) CO2 Level: ": "410ppm",
+        "(SGP30) Total VOC: ": "5ppm",
+        "(BME280) Tempature (Celsius): ": "21.9C",
+        "(BME280) Humidity: ": "69.2rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:49:44.739222": {
+        "(SGP30) CO2 Level: ": "405ppm",
+        "(SGP30) Total VOC: ": "9ppm",
+        "(BME280) Tempature (Celsius): ": "21.9C",
+        "(BME280) Humidity: ": "69.4rh",
+        "(BME280) Pressure: ": "975.9hP"
+    }
+}{
+    "14:49:47.414203": {
+        "(SGP30) CO2 Level: ": "414ppm",
+        "(SGP30) Total VOC: ": "1ppm",
+        "(BME280) Tempature (Celsius): ": "21.9C",
+        "(BME280) Humidity: ": "69.6rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:49:50.100300": {
+        "(SGP30) CO2 Level: ": "420ppm",
+        "(SGP30) Total VOC: ": "4ppm",
+        "(BME280) Tempature (Celsius): ": "21.9C",
+        "(BME280) Humidity: ": "69.7rh",
+        "(BME280) Pressure: ": "975.9hP"
+    }
+}{
+    "14:49:52.776016": {
+        "(SGP30) CO2 Level: ": "401ppm",
+        "(SGP30) Total VOC: ": "4ppm",
+        "(BME280) Tempature (Celsius): ": "21.9C",
+        "(BME280) Humidity: ": "69.3rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:49:55.451351": {
+        "(SGP30) CO2 Level: ": "413ppm",
+        "(SGP30) Total VOC: ": "4ppm",
+        "(BME280) Tempature (Celsius): ": "21.9C",
+        "(BME280) Humidity: ": "70.7rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:49:58.125354": {
+        "(SGP30) CO2 Level: ": "412ppm",
+        "(SGP30) Total VOC: ": "9ppm",
+        "(BME280) Tempature (Celsius): ": "21.9C",
+        "(BME280) Humidity: ": "70.2rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:50:00.803725": {
+        "(SGP30) CO2 Level: ": "404ppm",
+        "(SGP30) Total VOC: ": "0ppm",
+        "(BME280) Tempature (Celsius): ": "21.9C",
+        "(BME280) Humidity: ": "70.0rh",
+        "(BME280) Pressure: ": "975.9hP"
+    }
+}{
+    "14:50:03.477785": {
+        "(SGP30) CO2 Level: ": "710ppm",
+        "(SGP30) Total VOC: ": "34ppm",
+        "(BME280) Tempature (Celsius): ": "22.4C",
+        "(BME280) Humidity: ": "81.5rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:50:06.152134": {
+        "(SGP30) CO2 Level: ": "1373ppm",
+        "(SGP30) Total VOC: ": "133ppm",
+        "(BME280) Tempature (Celsius): ": "23.8C",
+        "(BME280) Humidity: ": "90.2rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:50:08.827076": {
+        "(SGP30) CO2 Level: ": "948ppm",
+        "(SGP30) Total VOC: ": "145ppm",
+        "(BME280) Tempature (Celsius): ": "23.6C",
+        "(BME280) Humidity: ": "91.4rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:50:11.510275": {
+        "(SGP30) CO2 Level: ": "685ppm",
+        "(SGP30) Total VOC: ": "109ppm",
+        "(BME280) Tempature (Celsius): ": "23.3C",
+        "(BME280) Humidity: ": "91.5rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:50:14.183970": {
+        "(SGP30) CO2 Level: ": "627ppm",
+        "(SGP30) Total VOC: ": "85ppm",
+        "(BME280) Tempature (Celsius): ": "23.2C",
+        "(BME280) Humidity: ": "91.2rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:50:16.875730": {
+        "(SGP30) CO2 Level: ": "553ppm",
+        "(SGP30) Total VOC: ": "66ppm",
+        "(BME280) Tempature (Celsius): ": "23.2C",
+        "(BME280) Humidity: ": "92.4rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:50:19.549575": {
+        "(SGP30) CO2 Level: ": "511ppm",
+        "(SGP30) Total VOC: ": "46ppm",
+        "(BME280) Tempature (Celsius): ": "23.0C",
+        "(BME280) Humidity: ": "91.8rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}{
+    "14:50:22.229258": {
+        "(SGP30) CO2 Level: ": "488ppm",
+        "(SGP30) Total VOC: ": "40ppm",
+        "(BME280) Tempature (Celsius): ": "23.0C",
+        "(BME280) Humidity: ": "91.5rh",
+        "(BME280) Pressure: ": "976.0hP"
+    }
+}

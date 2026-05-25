@@ -1,0 +1,14 @@
+[project]
+name = "serge-raspberry-pi"
+version = "0.1.0"
+description = "Raspberry pi software for the SERGE Storm Chasing Team"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "adafruit-blinka>=9.1.0",
+    "adafruit-circuitpython-bme280>=2.6.32",
+    "board>=1.0",
+    "dotenv>=0.9.9",
+    "sgp30>=0.1.6",
+    "w1thermsensor>=2.3.0",
+]

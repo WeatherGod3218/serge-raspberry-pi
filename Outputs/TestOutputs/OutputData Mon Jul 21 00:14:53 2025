@@ -1,0 +1,11 @@
+{
+    "00:14:53.870572": {
+        "(SGP30) CO2 Level: ": "403ppm",
+        "(SGP30) Total VOC: ": "5ppm",
+        "(BME280) Tempature (Celsius): ": "21.4C",
+        "(BME280) Humidity: ": "67.9rh",
+        "(BME280) Pressure: ": "984.9hP",
+        "(W1Therm) Tempature (Celsius): ": "20.2C",
+        "(W1Therm) Tempature (Fahrenheit): ": "68.3F"
+    }
+}
