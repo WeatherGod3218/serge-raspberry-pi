@@ -3,6 +3,14 @@ FROM ghcr.io/astral-sh/uv:python3.14-alpine AS base
 
 WORKDIR /app
 
+# RUN apk add --no-cache \
+#     gcc \
+#     musl-dev \
+#     linux-headers \
+#     i2c-tools \
+#     libgpiod \
+#     libgpiod-dev
+
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen
 
@@ -20,6 +28,8 @@ RUN uv sync --frozen
 
 FROM ghcr.io/astral-sh/uv:python3.14-alpine
 
+# RUN apk add --no-cache libgpiod i2c-tools
+
 COPY --from=base /app/.venv /app/.venv
 COPY src /app
 # COPY --from=docbuilder /appdocs/site /app/docs
@@ -31,4 +41,4 @@ RUN addgroup -g 2000 usergroup && \
 
 USER appuser
 
-CMD ["python", "main.py"]
+CMD ["uv", "run", "python", "main.py"]

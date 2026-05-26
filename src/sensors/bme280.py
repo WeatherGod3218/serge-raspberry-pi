@@ -1,6 +1,6 @@
 from logging import getLogger, Logger
 
-import board
+# import board
 import busio
 from adafruit_bme280 import basic as BME280
 
@@ -42,7 +42,7 @@ def init_sensor() -> bool:
     Attempts to initalize the BME280 sensor.
 
     Returns:
-        bool: If the probe was able to successfully boot or not
+        bool: If the sensor was able to successfully boot or not
     """
     # global I2C, SENSOR
 
@@ -53,5 +53,3 @@ def init_sensor() -> bool:
     # sensor.sea_level_pressure = SEA_LEVEL_PRESSURE
     # logger.info("BME280 Initialized!")
     return True
-
-print("BME280 Initialized!")
