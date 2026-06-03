@@ -19,7 +19,7 @@
 # import sensors.sgp30 as sgp30
 
 # INTERVAL_TIME = 2.5  # In seconds, determines how long in between each attempt to read/write data (NOT INCLUDING LENGTH IT TAKES FOR SENSORS)
-    
+
 # start_time = time.time() # Start of the running period, used for the File
 # errors_on_scan = 0
 
@@ -33,9 +33,8 @@
 #         return "NULL"
 
 
-
 # def main():
-    
+
 #     while True:
 #         global errors_on_scan,foundW1thermSensor
 #         errors_on_scan = 0

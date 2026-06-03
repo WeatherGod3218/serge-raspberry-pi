@@ -27,8 +27,10 @@ current_pressure: int = 50
 def get_pressure_test() -> str:
     return "50"
 
+
 def get_humidity_test() -> str:
-    return "69 69 69" 
+    return "69 69 69"
+
 
 def get_read_functions():
     return [get_pressure_test, get_humidity_test]
@@ -36,6 +38,7 @@ def get_read_functions():
 
 def update():
     raise Exception("MEOW!")
+
 
 def init_sensor() -> bool:
     """

@@ -11,3 +11,8 @@ dependencies = [
     "sgp30>=0.1.6",
     "w1thermsensor>=2.3.0",
 ]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.15",
+]

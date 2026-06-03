@@ -6,7 +6,7 @@ import json
 
 # sgp30 = SGP30()
 
-#Initilizing Sensor
+# Initilizing Sensor
 print("Initialzing SGP30 Sensor...(Estimated 15-20 Seconds)")
 start_time = time.time()
 
@@ -30,7 +30,6 @@ def init_sensor() -> bool:
     """
     start_time = time.time()
 
-        
     # global I2C, SENSOR
 
     # logger.info("Attempting to Initialize the BME280")
