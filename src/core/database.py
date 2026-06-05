@@ -7,15 +7,11 @@ import threading
 import queue
 
 from dataclasses import dataclass
-from config import BASE_DIR, DATABASE_FILENAME, DATABASE_QUEUE_MAX_SIZE, PROBE_ID
+from config import BASE_DIR, DATABASE_FILENAME, DATABASE_QUEUE_MAX_SIZE, SESSION_ID
 from modules.appcontext import AppContext
 
 logger: logging.Logger = logging.getLogger(__name__)
 database_queue: multiprocessing.Queue = multiprocessing.Queue(maxsize=DATABASE_QUEUE_MAX_SIZE)
-
-EVENT_KEY: str = "data_type"
-LOG_EVENT_TYPE: str = "event"
-DATA_EVENT_TYPE: str = "data"
 
 @dataclass(slots=True)
 class ProbeEvent:
@@ -46,7 +42,7 @@ def log_event(message: str, level: int) -> None:
     """
 
     new_entry: ProbeEvent = ProbeEvent(
-        timestamp=time.time(), message=message, severity=level
+        timestamp=round(time.time(), 2), message=message, severity=level
     )
 
     database_queue.put(new_entry)
@@ -68,7 +64,7 @@ def log_sensor_data(
     """
 
     new_entry: ProbeData = ProbeData(
-        timestamp=time.time(),
+        timestamp=round(time.time(), 2),
         humidity=humidity,
         pressure=pressure,
         voc=voc,
@@ -90,11 +86,11 @@ def process_sensor_data(cursor: sqlite3.Cursor, d: ProbeData) -> None:
     """
     cursor.execute(
         """
-    INSERT INTO data (probe_id, timestamp, humidity, pressure, voc, wind_speed, co2, precipitation)
+    INSERT INTO data (session_id, timestamp, humidity, pressure, voc, wind_speed, co2, precipitation)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     """,
         (
-            PROBE_ID,
+            SESSION_ID,
             d.timestamp,
             d.humidity,
             d.pressure,
@@ -116,10 +112,10 @@ def process_log_event(cursor: sqlite3.Cursor, d: ProbeEvent) -> None:
     """
     cursor.execute(
         """
-    INSERT INTO events (probe_id, timestamp, message, severity)
+    INSERT INTO events (session_id, timestamp, message, severity)
     VALUES (?, ?, ?, ?)
     """,
-        (PROBE_ID, d.timestamp, d.message, d.severity),
+        (SESSION_ID, d.timestamp, d.message, d.severity),
     )
 
 
@@ -144,7 +140,7 @@ def initialize_database() -> None:
             CREATE TABLE IF NOT EXISTS data (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,                
                 
-                probe_id TEXT NOT NULL,
+                session_id TEXT NOT NULL,
                 timestamp REAL NOT NULL,
                    
                 temperature REAL,
@@ -162,7 +158,7 @@ def initialize_database() -> None:
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS events (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,                
-                probe_id TEXT NOT NULL,
+                session_id TEXT NOT NULL,
                 timestamp REAL NOT NULL,
                        
                 message TEXT,

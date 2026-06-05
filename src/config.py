@@ -47,7 +47,7 @@ def _get_env_variable(name: str, default: str | None = None) -> str | None:
 
 # General Settings
 BASE_DIR: str = os.path.dirname(os.path.abspath(__file__))
-PROBE_ID: str = _generate_session_id()
+SESSION_ID: str = _generate_session_id()
 
 SEND_DATA_TO_SERVER: bool = False
 

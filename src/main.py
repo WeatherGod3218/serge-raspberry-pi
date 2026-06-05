@@ -4,7 +4,7 @@ import threading
 import signal
 
 from core import database, sensor_reader
-from config import PROBE_ID, SEND_DATA_TO_SERVER
+from config import SESSION_ID, SEND_DATA_TO_SERVER
 from modules.appcontext import AppContext
 
 logging.basicConfig(
@@ -63,17 +63,17 @@ def main():
     sensor_process.start()
 
     logger.info(
-        f"Succussfully Initalized All Applications! Current Session ID: {PROBE_ID}"
+        f"Succussfully Initalized All Applications! Current Session ID: {SESSION_ID}"
     )
     networking_thread = threading.Thread()
 
-    database.log_event(f"STARTED APPLICATION:{PROBE_ID}", logging.INFO)
+    database.log_event(f"STARTED APPLICATION:{SESSION_ID}", logging.INFO)
 
     running_context.thread_shutdown.wait()
     
     logger.info("Starting shutdown sequence!")
 
-    database.log_event(f"STOPPED APPLICATION:{PROBE_ID}", logging.INFO)
+    database.log_event(f"STOPPED APPLICATION:{SESSION_ID}", logging.INFO)
 
     logger.info("Shutting down sensors")
     sensor_process.join(timeout=10)
