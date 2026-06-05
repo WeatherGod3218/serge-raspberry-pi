@@ -45,7 +45,8 @@ __uv add --group $GROUP $PACKAGE__: Same as UV add, but adds the package to the 
     * Windows: `.venv\Scripts\activate`
     * Other: Good luck!
 3. Run: `uv sync --all-groups`
-4. You're all set!
+4. Run: `pre-commit install`
+5. You're all set!
 
 ## Running the Application
 
@@ -68,3 +69,11 @@ serge-raspberry-pi also has support for Docker Compose, a extended version of do
 ```
     docker compose up --build
 ```
+
+### Testing
+
+We're using the pytest framework to create tests. A good minimum coverage requirement is about <=90%.
+
+To run the tests just run: `pytest`
+
+`coverage.xml` and `htmlcov` should be generated. `coverage.xml` is used for Sonarqube, while `htmlcov` is a local html view into code coverage. The easiest way to view the coverage site is to enter the directory and run: `python -m http.server` and visit the site!

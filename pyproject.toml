@@ -14,5 +14,10 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "coverage>=7.14.1",
+    "pre-commit>=4.6.0",
     "ruff>=0.15.15",
+]
+tests = [
+    "pytest>=9.0.3",
 ]
