@@ -11,7 +11,10 @@ from config import BASE_DIR, DATABASE_FILENAME, DATABASE_QUEUE_MAX_SIZE, SESSION
 from modules.appcontext import AppContext
 
 logger: logging.Logger = logging.getLogger(__name__)
-database_queue: multiprocessing.Queue = multiprocessing.Queue(maxsize=DATABASE_QUEUE_MAX_SIZE)
+database_queue: multiprocessing.Queue = multiprocessing.Queue(
+    maxsize=DATABASE_QUEUE_MAX_SIZE
+)
+
 
 @dataclass(slots=True)
 class ProbeEvent:
@@ -127,11 +130,12 @@ def initialize_database() -> None:
     logger.info("Attempting to Load Database!")
 
     try:
-
         data_dir = f"{BASE_DIR}/data"
         os.makedirs(data_dir, exist_ok=True)
 
-        db: sqlite3.Connection = sqlite3.connect(f"{BASE_DIR}/data/{DATABASE_FILENAME}",timeout=30.0)
+        db: sqlite3.Connection = sqlite3.connect(
+            f"{BASE_DIR}/data/{DATABASE_FILENAME}", timeout=30.0
+        )
         cursor: sqlite3.Cursor = db.cursor()
 
         cursor.execute("PRAGMA journal_mode=DELETE")
@@ -183,16 +187,18 @@ def initialize_database() -> None:
     logger.info("Successfully loaded the database!")
 
 
-def update_database_loop(ctx : AppContext):
+def update_database_loop(ctx: AppContext):
     """
     Running loop for the database writing thread
     """
-    
-    loop_database: sqlite3.Connection = sqlite3.connect(f"{BASE_DIR}/data/{DATABASE_FILENAME}")
+
+    loop_database: sqlite3.Connection = sqlite3.connect(
+        f"{BASE_DIR}/data/{DATABASE_FILENAME}"
+    )
     cursor: sqlite3.Cursor = loop_database.cursor()
 
     try:
-        while True:            
+        while True:
             try:
                 new_entry: ProbeData | ProbeEvent = database_queue.get(timeout=1)
             except queue.Empty:
@@ -209,12 +215,15 @@ def update_database_loop(ctx : AppContext):
                 else:
                     logger.warning(f"Unknown entry in the queue! {new_entry}")
             except Exception as e:
-                logger.exception(f"Failed to process entry, reverting! {new_entry} with error {e}")
+                logger.exception(
+                    f"Failed to process entry, reverting! {new_entry} with error {e}"
+                )
                 loop_database.rollback()
             else:
                 loop_database.commit()
     finally:
         loop_database.close()
+
 
 def trigger_shutdown():
     """

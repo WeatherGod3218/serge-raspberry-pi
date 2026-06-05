@@ -16,6 +16,7 @@ failed_sensors: dict[types.ModuleType, int] = {}
 
 logger: logging.Logger = logging.getLogger(__name__)
 
+
 def process_failed_sensor(sensor: types.ModuleType) -> None:
     """
     Processes a failed sensor, removing it from running sensors if above the configurated SENSOR_FAIL_SHUTDOWN_LIMIT
@@ -33,7 +34,10 @@ def process_failed_sensor(sensor: types.ModuleType) -> None:
             logger.warning(
                 f"SENSOR {sensor.__name__} HAS FAILED MORE THAN {SENSOR_FAIL_SHUTDOWN_LIMIT} TIMES, REMOVING IT FROM PROCESSING!"
             )
-            database.log_event(f"SENSOR {sensor.__name__} HAS FAILED MORE THAN {SENSOR_FAIL_SHUTDOWN_LIMIT} TIMES, REMOVING IT FROM PROCESSING!", logging.WARNING)
+            database.log_event(
+                f"SENSOR {sensor.__name__} HAS FAILED MORE THAN {SENSOR_FAIL_SHUTDOWN_LIMIT} TIMES, REMOVING IT FROM PROCESSING!",
+                logging.WARNING,
+            )
             return
     else:
         failed_sensors[sensor] = 1
@@ -41,8 +45,11 @@ def process_failed_sensor(sensor: types.ModuleType) -> None:
     logger.warning(
         f"SENSOR {sensor.__name__} HAS FAILED {failed_sensors[sensor]} TIMES! SENSOR WILL CONTINUE TO BE PROCESSED"
     )
-    
-    database.log_event(f"SENSOR {sensor.__name__} HAS FAILED {failed_sensors[sensor]} TIMES! SENSOR WILL CONTINUE TO BE PROCESSED", logging.WARNING)
+
+    database.log_event(
+        f"SENSOR {sensor.__name__} HAS FAILED {failed_sensors[sensor]} TIMES! SENSOR WILL CONTINUE TO BE PROCESSED",
+        logging.WARNING,
+    )
 
 
 def update_sensor(sensor: types.ModuleType) -> Exception | None:
@@ -71,7 +78,6 @@ def initalize_sensors() -> None:
 
     logger.info("Attempting to Load Sensors!")
 
-
     for sensor in LOADED_SENSORS:
         if not hasattr(sensor, "update"):
             logger.warning(
@@ -97,7 +103,7 @@ def initalize_sensors() -> None:
     logger.info(f"Sensors Loaded Successfully! {sensor_map}")
 
 
-def read_sensor_loop(ctx : AppContext):
+def read_sensor_loop(ctx: AppContext):
     """
     Running loop for the sensor reading thread
     """
@@ -126,6 +132,7 @@ def read_sensor_loop(ctx : AppContext):
         )
 
         time.sleep(1)
+
 
 def trigger_shutdown():
     """

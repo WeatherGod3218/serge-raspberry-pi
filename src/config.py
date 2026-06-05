@@ -18,6 +18,7 @@ def _generate_session_id() -> str:
     generated_uuid: uuid.UUID = uuid.uuid7()
     return str(generated_uuid)
 
+
 def _get_env_variable(name: str, default: str | None = None) -> str | None:
     """
     Retrieves an environment variable, with an optional default value.

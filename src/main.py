@@ -16,15 +16,17 @@ logging.basicConfig(
 logger: logging.Logger = logging.getLogger(__name__)
 running_context: AppContext | None
 
+
 def shutdown_handler(signum, frame):
     global running_context
 
     if running_context is None:
         return
-    
+
     running_context.thread_shutdown.set()
 
     return
+
 
 def main():
     global running_context
@@ -49,10 +51,8 @@ def main():
             f"Sending data to server was disabled! Skipping over initaliziation!"
         )
 
-
     database_thread = threading.Thread(
-        target=database.update_database_loop,
-        args=(running_context,)
+        target=database.update_database_loop, args=(running_context,)
     )
     database_thread.start()
 
@@ -70,7 +70,7 @@ def main():
     database.log_event(f"STARTED APPLICATION:{SESSION_ID}", logging.INFO)
 
     running_context.thread_shutdown.wait()
-    
+
     logger.info("Starting shutdown sequence!")
 
     database.log_event(f"STOPPED APPLICATION:{SESSION_ID}", logging.INFO)
@@ -87,6 +87,7 @@ def main():
     logger.info("Database thread stopped.")
 
     logger.info("Shutdown complete.")
+
 
 if __name__ == "__main__":
     main()
