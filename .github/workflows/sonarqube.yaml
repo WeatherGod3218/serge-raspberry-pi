@@ -1,0 +1,38 @@
+name: Sonarqube
+
+on:
+  push:
+    branches:
+      - main
+      - main-dev
+  pull_request:
+
+
+jobs:
+  build:
+    name: Build and analyze
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.14'
+
+      - name: Install dependencies
+        run: |
+          pip install uv
+          uv sync --group tests --frozen
+
+      - name: Run tests with coverage
+        run: |
+          uv run pytest -v
+
+      - uses: SonarSource/sonarqube-scan-action@v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
