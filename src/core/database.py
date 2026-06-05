@@ -1,18 +1,39 @@
 import sqlite3
-import multiprocessing
 import time
 import logging
-from typing import Any
-from enum import IntEnum
+import os
+import multiprocessing
+import threading
+import queue
 
-from config import BASE_DIR, DATABASE_FILENAME, DATABASE_QUEUE_MAX_SIZE
+from dataclasses import dataclass
+from config import BASE_DIR, DATABASE_FILENAME, DATABASE_QUEUE_MAX_SIZE, PROBE_ID
+from modules.appcontext import AppContext
 
 logger: logging.Logger = logging.getLogger(__name__)
-queue: multiprocessing.Queue = multiprocessing.Queue(maxsize=DATABASE_QUEUE_MAX_SIZE)
+database_queue: multiprocessing.Queue = multiprocessing.Queue(maxsize=DATABASE_QUEUE_MAX_SIZE)
 
 EVENT_KEY: str = "data_type"
 LOG_EVENT_TYPE: str = "event"
 DATA_EVENT_TYPE: str = "data"
+
+@dataclass(slots=True)
+class ProbeEvent:
+    timestamp: float
+    message: str
+    severity: int
+
+
+@dataclass(slots=True)
+class ProbeData:
+    timestamp: float
+
+    humidity: float | None
+    pressure: float | None
+    voc: float | None
+    wind_speed: float | None
+    co2: float | None
+    precipitation: float | None
 
 
 def log_event(message: str, level: int) -> None:
@@ -23,40 +44,83 @@ def log_event(message: str, level: int) -> None:
         message (str): The message to be written to the database, ex: Sensor Failed!
         level (LogSeverity): The severity of the event, advised to use loggings. Levels
     """
-    new_entry: dict[str, Any] = {}
-    new_entry[EVENT_KEY] = LOG_EVENT_TYPE
-    new_entry["timestamp"] = time.time()
 
-    new_entry["data"] = {}
+    new_entry: ProbeEvent = ProbeEvent(
+        timestamp=time.time(), message=message, severity=level
+    )
 
-    new_entry["data"]["message"] = message
-    new_entry["data"]["level"] = level
-
-    queue.put(new_entry)
+    database_queue.put(new_entry)
 
 
-def log_sensor_data(read_data: dict[str, int]) -> None:
+def log_sensor_data(
+    humidity: float | None,
+    pressure: float | None,
+    voc: float | None,
+    wind_speed: float | None,
+    co2: float | None,
+    precipitation: float | None,
+) -> None:
     """
     Adds a sensor data event into the queue to be written.
 
     Arguments:
         data (dict[str, int]): The data to be written locally
     """
-    new_entry: dict[str, Any] = {}
-    new_entry[EVENT_KEY] = DATA_EVENT_TYPE
-    new_entry["timestamp"] = time.time()
 
-    new_entry["data"] = read_data
+    new_entry: ProbeData = ProbeData(
+        timestamp=time.time(),
+        humidity=humidity,
+        pressure=pressure,
+        voc=voc,
+        wind_speed=wind_speed,
+        co2=co2,
+        precipitation=precipitation,
+    )
 
-    queue.put(new_entry)
+    database_queue.put(new_entry)
 
 
-def process_sensor_data(cursor: sqlite3.Cursor, sensor_entry: dict[str, Any]):
-    return
+def process_sensor_data(cursor: sqlite3.Cursor, d: ProbeData) -> None:
+    """
+    Parses data from the sensor to be written to the porbe_data database.
+
+    Arguments:
+        cursor (sqlite3.Cursor): The SQLite cursor to use
+        d (ProbeData): The data to be written to the database
+    """
+    cursor.execute(
+        """
+    INSERT INTO data (probe_id, timestamp, humidity, pressure, voc, wind_speed, co2, precipitation)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    """,
+        (
+            PROBE_ID,
+            d.timestamp,
+            d.humidity,
+            d.pressure,
+            d.voc,
+            d.wind_speed,
+            d.co2,
+            d.precipitation,
+        ),
+    )
 
 
-def process_log_event(cursor: sqlite3.Cursor, sensor_entry: dict[str, Any]):
-    return
+def process_log_event(cursor: sqlite3.Cursor, d: ProbeEvent) -> None:
+    """
+    Parses data from the sensor to be written to the events database.
+
+    Arguments:
+        cursor (sqlite3.Cursor): The SQLite cursor to use
+        d (ProbeEvent): The data to be written to the database
+    """
+    cursor.execute(
+        """
+    INSERT INTO events (probe_id, timestamp, message, severity)
+    VALUES (?, ?, ?, ?)
+    """,
+        (PROBE_ID, d.timestamp, d.message, d.severity),
+    )
 
 
 def initialize_database() -> None:
@@ -64,20 +128,24 @@ def initialize_database() -> None:
     Attempts to initalize the SQLite database, creating necessary tables if they do not exist
     """
 
+    logger.info("Attempting to Load Database!")
+
     try:
-        db: sqlite3.Connection = sqlite3.connect(f"{BASE_DIR}/data/{DATABASE_FILENAME}")
+
+        data_dir = f"{BASE_DIR}/data"
+        os.makedirs(data_dir, exist_ok=True)
+
+        db: sqlite3.Connection = sqlite3.connect(f"{BASE_DIR}/data/{DATABASE_FILENAME}",timeout=30.0)
         cursor: sqlite3.Cursor = db.cursor()
 
-        cursor.execute("PRAGMA journal_mode=WAL")
-        result = cursor.execute("PRAGMA journal_mode").fetchone()
-        if result[0].lower() != "wal":
-            raise RuntimeError(f"WAL mode not set, got: {result[0]}")
+        cursor.execute("PRAGMA journal_mode=DELETE")
 
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS data (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                timestamp REAL NOT NULL,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,                
+                
                 probe_id TEXT NOT NULL,
+                timestamp REAL NOT NULL,
                    
                 temperature REAL,
                 humidity REAL,
@@ -93,10 +161,10 @@ def initialize_database() -> None:
 
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS events (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                timestamp REAL NOT NULL,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,                
                 probe_id TEXT NOT NULL,
-
+                timestamp REAL NOT NULL,
+                       
                 message TEXT,
                 severity TEXT,
                    
@@ -116,30 +184,45 @@ def initialize_database() -> None:
         logger.critical("DB init failed: %s", e)
         raise
 
+    logger.info("Successfully loaded the database!")
 
-def update_database_loop():
+
+def update_database_loop(ctx : AppContext):
     """
     Running loop for the database writing thread
     """
-
-    db: sqlite3.Connection = sqlite3.connect(f"{BASE_DIR}/data/{DATABASE_FILENAME}")
-    cursor: sqlite3.Cursor = db.cursor()
+    
+    loop_database: sqlite3.Connection = sqlite3.connect(f"{BASE_DIR}/data/{DATABASE_FILENAME}")
+    cursor: sqlite3.Cursor = loop_database.cursor()
 
     try:
-        while True:
-            new_entry: dict[str, Any] = queue.get()
-            event_type: str = new_entry[EVENT_KEY]
+        while True:            
+            try:
+                new_entry: ProbeData | ProbeEvent = database_queue.get(timeout=1)
+            except queue.Empty:
+                if ctx.thread_shutdown.is_set():
+                    logger.info("Shutdown detected and queue empty, exiting.")
+                    break
+                continue
 
-            if event_type == LOG_EVENT_TYPE:
-                process_log_event(cursor, new_entry)
-            elif event_type == DATA_EVENT_TYPE:
-                process_sensor_data(cursor, new_entry)
-            elif event_type == "SHUTDOWN_SIGNAL":
-                db.commit()
-                break
-
-            db.commit()
-    except Exception as e:
-        logger.error(f"Error in the database event loop {e}")
+            try:
+                if isinstance(new_entry, ProbeEvent):
+                    process_log_event(cursor, new_entry)
+                elif isinstance(new_entry, ProbeData):
+                    process_sensor_data(cursor, new_entry)
+                else:
+                    logger.warning(f"Unknown entry in the queue! {new_entry}")
+            except Exception as e:
+                logger.exception(f"Failed to process entry, reverting! {new_entry} with error {e}")
+                loop_database.rollback()
+            else:
+                loop_database.commit()
     finally:
-        db.close()
+        loop_database.close()
+
+def trigger_shutdown():
+    """
+    Triggers the shutdown flag for the database to save data and exit
+    """
+    global shutting_down
+    shutting_down = True

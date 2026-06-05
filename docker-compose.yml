@@ -9,8 +9,8 @@ services:
     env_file:
       - .env
     volumes:
-      - ./data:/app/data
-
+      - ./data:/src/data
+    stop_grace_period: 30s
     # devices:
     #   - /dev/i2c-1:/dev/i2c-1
     # environment:

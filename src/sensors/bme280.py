@@ -1,4 +1,5 @@
 from logging import getLogger, Logger
+import random
 
 # import board
 import busio
@@ -12,8 +13,8 @@ I2C: busio.I2C
 sensor: BME280.Adafruit_BME280_I2C
 
 
-current_pressure: int = 50
-
+current_pressure: float = 50
+current_humidity: float = 60
 # def get_temp() -> float:
 #     return "%0.1f" % sensor.temperature
 
@@ -24,20 +25,27 @@ current_pressure: int = 50
 #     return "%0.1f" % sensor.pressure
 
 
-def get_pressure_test() -> str:
-    return "50"
+def get_pressure_test() -> dict[str, float]:
+    return {"pressure": current_pressure}
 
 
-def get_humidity_test() -> str:
-    return "69 69 69"
+def get_humidity_test() -> dict[str, float]:
+    return {"humidity": current_humidity}
 
 
 def get_read_functions():
     return [get_pressure_test, get_humidity_test]
 
 
-def update():
-    raise Exception("MEOW!")
+def update() -> None:
+    """
+    Attempts to update the BME280 sensors' pressure and humidity.
+
+    """
+    global current_humidity, current_pressure
+
+    current_humidity = random.randint(20, 60)
+    current_pressure = random.randint(20, 60)
 
 
 def init_sensor() -> bool:

@@ -1,18 +1,20 @@
 import types
 import time
+import asyncio
 
-from logging import getLogger, Logger
+import logging
 
 from sensors import bme280
 from config import SENSOR_FAIL_SHUTDOWN_LIMIT
+from core import database
+from modules.appcontext import AppContext
 
 LOADED_SENSORS: list[types.ModuleType] = [bme280]
 
 sensor_map: dict[types.ModuleType, list[types.FunctionType]] = {}
 failed_sensors: dict[types.ModuleType, int] = {}
 
-logger: Logger = getLogger(__name__)
-
+logger: logging.Logger = logging.getLogger(__name__)
 
 def process_failed_sensor(sensor: types.ModuleType) -> None:
     """
@@ -31,6 +33,7 @@ def process_failed_sensor(sensor: types.ModuleType) -> None:
             logger.warning(
                 f"SENSOR {sensor.__name__} HAS FAILED MORE THAN {SENSOR_FAIL_SHUTDOWN_LIMIT} TIMES, REMOVING IT FROM PROCESSING!"
             )
+            database.log_event(f"SENSOR {sensor.__name__} HAS FAILED MORE THAN {SENSOR_FAIL_SHUTDOWN_LIMIT} TIMES, REMOVING IT FROM PROCESSING!", logging.WARNING)
             return
     else:
         failed_sensors[sensor] = 1
@@ -38,6 +41,8 @@ def process_failed_sensor(sensor: types.ModuleType) -> None:
     logger.warning(
         f"SENSOR {sensor.__name__} HAS FAILED {failed_sensors[sensor]} TIMES! SENSOR WILL CONTINUE TO BE PROCESSED"
     )
+    
+    database.log_event(f"SENSOR {sensor.__name__} HAS FAILED {failed_sensors[sensor]} TIMES! SENSOR WILL CONTINUE TO BE PROCESSED", logging.WARNING)
 
 
 def update_sensor(sensor: types.ModuleType) -> Exception | None:
@@ -58,11 +63,14 @@ def update_sensor(sensor: types.ModuleType) -> Exception | None:
         return e
 
 
-def load_sensors():
+def initalize_sensors() -> None:
     """
     Loads all sensors from the LOADED SENSORS, ensuring that both an "update" and "get_read_functions" exists
     """
     global LOADED_SENSORS, sensor_map
+
+    logger.info("Attempting to Load Sensors!")
+
 
     for sensor in LOADED_SENSORS:
         if not hasattr(sensor, "update"):
@@ -84,27 +92,44 @@ def load_sensors():
             )
             sensor_map.pop(sensor, None)
 
-        logger.info(f"Succesfully loaded the sensor {sensor.__name__}")
+        logger.info(f"Successfully loaded the sensor {sensor.__name__}")
+
+    logger.info(f"Sensors Loaded Successfully! {sensor_map}")
 
 
-def read_sensor_loop():
+def read_sensor_loop(ctx : AppContext):
     """
     Running loop for the sensor reading thread
     """
     global sensor_map
 
-    while True:
-        for sensor, _ in list(sensor_map.items()):
+    while not ctx.thread_shutdown.is_set():
+        newest_map: dict[str, float] = {}
+
+        for sensor, func_list in list(sensor_map.items()):
             error_updating_sensor: Exception | None = update_sensor(sensor)
 
             if error_updating_sensor:
                 logger.warning(f"{error_updating_sensor}")
                 continue
 
-            for function in sensor_map[sensor]:
-                result: str = function()
-                formatted_string: str = f"({sensor.__name__}): {result}"
+            for function in func_list:
+                newest_map.update(function())
 
-                logger.info(formatted_string)
+        database.log_sensor_data(
+            humidity=newest_map.get("humidity"),
+            pressure=newest_map.get("pressure"),
+            voc=newest_map.get("voc"),
+            wind_speed=newest_map.get("wind_speed"),
+            co2=newest_map.get("co2"),
+            precipitation=newest_map.get("precipitation"),
+        )
 
         time.sleep(1)
+
+def trigger_shutdown():
+    """
+    Triggers the shutdown flag for the database to save data and exit
+    """
+    global shutting_down
+    shutting_down = True

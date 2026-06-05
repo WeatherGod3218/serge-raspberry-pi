@@ -30,15 +30,10 @@ FROM ghcr.io/astral-sh/uv:python3.14-alpine
 
 # RUN apk add --no-cache libgpiod i2c-tools
 
-COPY --from=base /app/.venv /app/.venv
-COPY src /app
+COPY --from=base /app/.venv /src/.venv
+COPY src /src
 # COPY --from=docbuilder /appdocs/site /app/docs
 
-WORKDIR /app
-
-RUN addgroup -g 2000 usergroup && \ 
-    adduser -S -u 1001 -G usergroup appuser
-
-USER appuser
+WORKDIR /src
 
 CMD ["uv", "run", "python", "main.py"]
