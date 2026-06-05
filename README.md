@@ -1,4 +1,4 @@
-# Serge Raspberry Pi
+# Serge Raspberry Pi ![Static Badge](https://img.shields.io/badge/weather-%23b16ded?style=flat&logo=github&logoColor=black&labelColor=0%2C0%2C0&link=https%3A%2F%2Fgithub.com%2FweatherGod3218%2F)
 
 Raspberry Pi software for collecting and sending data on SERGE's Probe
 
