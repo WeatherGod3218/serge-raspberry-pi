@@ -3,9 +3,9 @@ import sys
 import threading
 import signal
 
-from core import database, sensor_reader
+from core import database, sensor_reader, networking
 from config import SESSION_ID, SEND_DATA_TO_SERVER
-from modules.appcontext import AppContext
+from modules.appcontext import AppContext, ProbeData
 
 logging.basicConfig(
     level=logging.INFO,
@@ -33,7 +33,12 @@ def main():
     logger.info("Creating App Context!")
 
     running_context = AppContext(
+        latest_reading=ProbeData(
+            0, 0, None, None, None, None, None, None
+        ),  # Should never get read?
+        websocket_active=False,
         thread_shutdown=threading.Event(),
+        reading_updated=threading.Event(),
     )
 
     signal.signal(signal.SIGTERM, shutdown_handler)
@@ -44,14 +49,7 @@ def main():
     sensor_reader.initalize_sensors()
     database.initialize_database()
 
-    if SEND_DATA_TO_SERVER:
-        pass
-    else:
-        logger.warning(
-            f"Sending data to server was disabled! Skipping over initaliziation!"
-        )
-
-    database_thread = threading.Thread(
+    database_thread: threading.Thread = threading.Thread(
         target=database.update_database_loop, args=(running_context,)
     )
     database_thread.start()
@@ -65,7 +63,24 @@ def main():
     logger.info(
         f"Succussfully Initalized All Applications! Current Session ID: {SESSION_ID}"
     )
-    networking_thread = threading.Thread()
+
+    websocket_thread: threading.Thread | None = None
+    http_thread: threading.Thread | None = None
+
+    if SEND_DATA_TO_SERVER:
+        websocket_thread = threading.Thread(
+            target=networking.run_websocket_loop, args=(running_context,)
+        )
+        websocket_thread.start()
+
+        http_thread = threading.Thread(
+            target=networking.run_backup_loop, args=(running_context,)
+        )
+        http_thread.start()
+    else:
+        logger.warning(
+            "Sending data to server was disabled! Skipping over initaliziation!"
+        )
 
     database.log_event(f"STARTED APPLICATION:{SESSION_ID}", logging.INFO)
 
@@ -85,6 +100,16 @@ def main():
     logger.info("Stopping database thread!")
     database_thread.join()
     logger.info("Database thread stopped.")
+
+    if websocket_thread:
+        logger.info("Stopping websocket thread!")
+        websocket_thread.join()
+        logger.info("websocket thread stopped.")
+
+    if http_thread:
+        logger.info("Stopping http thread!")
+        http_thread.join()
+        logger.info("Http thread stopped.")
 
     logger.info("Shutdown complete.")
 

@@ -3,36 +3,22 @@ import time
 import logging
 import os
 import multiprocessing
-import threading
 import queue
 
-from dataclasses import dataclass
-from config import BASE_DIR, DATABASE_FILENAME, DATABASE_QUEUE_MAX_SIZE, SESSION_ID
-from modules.appcontext import AppContext
+from config import (
+    BASE_DIR,
+    DATABASE_FILENAME,
+    DATABASE_QUEUE_MAX_SIZE,
+    SESSION_ID,
+    DATABASE_UPLOAD_BATCH_SIZE,
+)
+from modules.appcontext import AppContext, ProbeData, ProbeEvent
+from typing import Any
 
 logger: logging.Logger = logging.getLogger(__name__)
 database_queue: multiprocessing.Queue = multiprocessing.Queue(
     maxsize=DATABASE_QUEUE_MAX_SIZE
 )
-
-
-@dataclass(slots=True)
-class ProbeEvent:
-    timestamp: float
-    message: str
-    severity: int
-
-
-@dataclass(slots=True)
-class ProbeData:
-    timestamp: float
-
-    humidity: float | None
-    pressure: float | None
-    voc: float | None
-    wind_speed: float | None
-    co2: float | None
-    precipitation: float | None
 
 
 def log_event(message: str, level: int) -> None:
@@ -51,32 +37,15 @@ def log_event(message: str, level: int) -> None:
     database_queue.put(new_entry)
 
 
-def log_sensor_data(
-    humidity: float | None,
-    pressure: float | None,
-    voc: float | None,
-    wind_speed: float | None,
-    co2: float | None,
-    precipitation: float | None,
-) -> None:
+def log_sensor_data(data_entry: ProbeData) -> None:
     """
     Adds a sensor data event into the queue to be written.
 
     Arguments:
-        data (dict[str, int]): The data to be written locally
+        data_entry (ProbeData): The data entry to be written to the database
     """
 
-    new_entry: ProbeData = ProbeData(
-        timestamp=round(time.time(), 2),
-        humidity=humidity,
-        pressure=pressure,
-        voc=voc,
-        wind_speed=wind_speed,
-        co2=co2,
-        precipitation=precipitation,
-    )
-
-    database_queue.put(new_entry)
+    database_queue.put(data_entry)
 
 
 def process_sensor_data(cursor: sqlite3.Cursor, d: ProbeData) -> None:
@@ -89,12 +58,13 @@ def process_sensor_data(cursor: sqlite3.Cursor, d: ProbeData) -> None:
     """
     cursor.execute(
         """
-    INSERT INTO data (session_id, timestamp, humidity, pressure, voc, wind_speed, co2, precipitation)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO data (session_id, timestamp, sequence, humidity, pressure, voc, wind_speed, co2, precipitation)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     """,
         (
             SESSION_ID,
             d.timestamp,
+            d.sequence,
             d.humidity,
             d.pressure,
             d.voc,
@@ -122,6 +92,52 @@ def process_log_event(cursor: sqlite3.Cursor, d: ProbeEvent) -> None:
     )
 
 
+def fetch_unsent_rows(cursor: sqlite3.Cursor) -> list:
+    """
+    Grabs all of the unsent rows to be uploaded, maxing out at 100 rows
+
+    Arguments:
+        cursor (sqlite3.Cursor): The SQLite cursor to use
+
+    Returns:
+        list: The list of rows to be uploaded
+    """
+
+    cursor.execute(
+        """
+        SELECT session_id, timestamp, sequence,
+            temperature, humidity, pressure, voc,
+            wind_speed, co2, precipitation
+            FROM data
+            WHERE sent = 0
+            LIMIT ?;
+    """,
+        (DATABASE_UPLOAD_BATCH_SIZE,),
+    )
+
+    rows: list[Any] = cursor.fetchall()
+
+    return rows
+
+
+def update_sent_rows(
+    cursor: sqlite3.Cursor, sent_rows: list[dict[str, str | int]]
+) -> None:
+    """
+    Updates the rows from the server acknowledgment to be sent
+
+    Arguments:
+        cursor (sqlite3.Cursor): The SQLite cursor to use
+        sent_rows (list[dict[str, str | int]]): The rows that were updated
+    """
+    cursor.executemany(
+        "UPDATE data SET sent = 1 WHERE session_id = :session_id AND sequence = :sequence",
+        sent_rows,  # ?? i guess bro
+    )
+
+    return
+
+
 def initialize_database() -> None:
     """
     Attempts to initalize the SQLite database, creating necessary tables if they do not exist
@@ -138,15 +154,14 @@ def initialize_database() -> None:
         )
         cursor: sqlite3.Cursor = db.cursor()
 
-        cursor.execute("PRAGMA journal_mode=DELETE")
+        cursor.execute("PRAGMA journal_mode=WAL")
 
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS data (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,                
-                
                 session_id TEXT NOT NULL,
                 timestamp REAL NOT NULL,
-                   
+                sequence INTEGER NOT NULL,
+
                 temperature REAL,
                 humidity REAL,
                 pressure REAL,
@@ -154,20 +169,26 @@ def initialize_database() -> None:
                 wind_speed REAL,
                 co2 REAL,
                 precipitation REAL,
-                   
-                sent INTEGER DEFAULT 0
+
+                sent INTEGER DEFAULT 0,
+
+                PRIMARY KEY (session_id, sequence)
             )
         """)
 
         cursor.execute("""
+            CREATE INDEX IF NOT EXISTS idx_data_unsent ON data (sent) WHERE sent = 0;
+        """)
+
+        cursor.execute("""
             CREATE TABLE IF NOT EXISTS events (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,                
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 session_id TEXT NOT NULL,
                 timestamp REAL NOT NULL,
-                       
-                message TEXT,
-                severity TEXT,
-                   
+
+                message TEXT NOT NULL,
+                severity TEXT NOT NULL,
+
                 sent INTEGER DEFAULT 0
             )
         """)
@@ -193,7 +214,7 @@ def update_database_loop(ctx: AppContext):
     """
 
     loop_database: sqlite3.Connection = sqlite3.connect(
-        f"{BASE_DIR}/data/{DATABASE_FILENAME}"
+        f"{BASE_DIR}/data/{DATABASE_FILENAME}", timeout=30.0
     )
     cursor: sqlite3.Cursor = loop_database.cursor()
 
@@ -222,6 +243,7 @@ def update_database_loop(ctx: AppContext):
             else:
                 loop_database.commit()
     finally:
+        loop_database.commit()
         loop_database.close()
 
 

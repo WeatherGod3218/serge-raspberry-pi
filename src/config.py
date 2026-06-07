@@ -24,11 +24,11 @@ def _get_env_variable(name: str, default: str | None = None) -> str | None:
     Retrieves an environment variable, with an optional default value.
 
     Args:
-            name (str): The name of the environment variable to retrieve.
-            default (str | None): An optional default value to return if the environment variable is not set.
+        name (str): The name of the environment variable to retrieve.
+        default (str | None): An optional default value to return if the environment variable is not set.
 
     Returns:
-            str | None: The value of the environment variable, or the default value if it is not set.
+        str | None: The value of the environment variable, or the default value if it is not set.
     """
 
     try:
@@ -50,7 +50,16 @@ def _get_env_variable(name: str, default: str | None = None) -> str | None:
 BASE_DIR: str = os.path.dirname(os.path.abspath(__file__))
 SESSION_ID: str = _generate_session_id()
 
-SEND_DATA_TO_SERVER: bool = False
+# Server Settings
+SEND_DATA_TO_SERVER: bool = True
+
+WEBSOCKET_RECONNECT_DEBOUNCE: int = 20
+DATABASE_BACKUP_DEBOUNCE: int = 20
+DATABASE_UPLOAD_BATCH_SIZE: int = 100
+
+HTTP_URL: str | None = _get_env_variable("HTTP_URL")
+WS_URL: str | None = _get_env_variable("WS_URL")
+SERVER_API_KEY: str | None = _get_env_variable("SERVER_API_KEY")
 
 # Database Settings
 DATABASE_FILENAME: str = "probedata.db"

@@ -1,13 +1,12 @@
 import types
 import time
-import asyncio
 
 import logging
 
 from sensors import bme280
 from config import SENSOR_FAIL_SHUTDOWN_LIMIT
 from core import database
-from modules.appcontext import AppContext
+from modules.appcontext import AppContext, ProbeData
 
 LOADED_SENSORS: list[types.ModuleType] = [bme280]
 
@@ -15,6 +14,7 @@ sensor_map: dict[types.ModuleType, list[types.FunctionType]] = {}
 failed_sensors: dict[types.ModuleType, int] = {}
 
 logger: logging.Logger = logging.getLogger(__name__)
+current_sequence_number: int = 1
 
 
 def process_failed_sensor(sensor: types.ModuleType) -> None:
@@ -107,7 +107,7 @@ def read_sensor_loop(ctx: AppContext):
     """
     Running loop for the sensor reading thread
     """
-    global sensor_map
+    global sensor_map, current_sequence_number
 
     while not ctx.thread_shutdown.is_set():
         newest_map: dict[str, float] = {}
@@ -122,7 +122,9 @@ def read_sensor_loop(ctx: AppContext):
             for function in func_list:
                 newest_map.update(function())
 
-        database.log_sensor_data(
+        new_data: ProbeData = ProbeData(
+            timestamp=time.time(),
+            sequence=current_sequence_number,
             humidity=newest_map.get("humidity"),
             pressure=newest_map.get("pressure"),
             voc=newest_map.get("voc"),
@@ -131,12 +133,10 @@ def read_sensor_loop(ctx: AppContext):
             precipitation=newest_map.get("precipitation"),
         )
 
+        ctx.latest_reading = new_data
+        ctx.reading_updated.set()
+
+        database.log_sensor_data(new_data)
+        current_sequence_number += 1
+
         time.sleep(1)
-
-
-def trigger_shutdown():
-    """
-    Triggers the shutdown flag for the database to save data and exit
-    """
-    global shutting_down
-    shutting_down = True

@@ -11,7 +11,13 @@ services:
     volumes:
       - ./data:/src/data
     stop_grace_period: 30s
+    networks:
+      - serge-external-network
     # devices:
     #   - /dev/i2c-1:/dev/i2c-1
     # environment:
     #   - BLINKA_RASPBERRY_PI=1
+
+networks:
+  serge-external-network:
+    external: true

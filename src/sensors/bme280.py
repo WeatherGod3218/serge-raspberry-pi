@@ -5,7 +5,6 @@ import random
 import busio
 from adafruit_bme280 import basic as BME280
 
-from config import SEA_LEVEL_PRESSURE
 
 logger: Logger = getLogger(__name__)
 
@@ -26,14 +25,31 @@ current_humidity: float = 60
 
 
 def get_pressure_test() -> dict[str, float]:
+    """
+    Temp function that returns a random pressure amount
+
+    ...Seems like you couldn't handle the... PRESSUREEEEEEEEEEEEE!!!!!!!!!!!!
+
+    Returns:
+        dict[str, int]: The pressure recorded with the key "pressure"
+    """
     return {"pressure": current_pressure}
 
 
 def get_humidity_test() -> dict[str, float]:
+    """
+    Temp function that returns a random humidity amount
+
+    Returns:
+        dict[str, int]: The humidty recorded with the key "humidity"
+    """
     return {"humidity": current_humidity}
 
 
 def get_read_functions():
+    """
+    Returns the list of functions to be processed
+    """
     return [get_pressure_test, get_humidity_test]
 
 
