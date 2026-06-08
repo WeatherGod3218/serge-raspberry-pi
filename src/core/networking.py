@@ -42,41 +42,41 @@ async def backup_data(ctx: AppContext):
     db.row_factory = sqlite3.Row
     cursor: sqlite3.Cursor = db.cursor()
 
-    while not ctx.thread_shutdown.is_set():
-        try:
-            rows: list[Any] = database.fetch_unsent_rows(cursor)
-            logger.info("rows")
+    client = httpx.AsyncClient(headers=headers, timeout=httpx.Timeout(10.0))
 
-            rows_as_json: list[dict[Any, Any]] = [dict(row) for row in rows]
+    try:
+        while not ctx.thread_shutdown.is_set():
+            event_rows: list[Any] = database.fetch_unsent_events(cursor)
+            data_rows: list[Any] = database.fetch_unsent_data(cursor)
 
-            if not rows_as_json:
-                logger.info("No rows to send, skipping")
+            if (not event_rows) and (not data_rows):
+                await asyncio.sleep(DATABASE_BACKUP_DEBOUNCE)
                 continue
 
-            logger.info(f"Sending {len(rows_as_json)} rows")
+            event_rows_json = [dict(r) for r in event_rows]
+            data_rows_json = [dict(r) for r in data_rows]
 
-            async with httpx.AsyncClient(
-                headers=headers, timeout=httpx.Timeout(10.0)
-            ) as client:
-                logger.info("OPENED")
-                server_response: httpx.Response = await client.post(
-                    HTTP_URL, json={"data": rows_as_json}
+            try:
+                resp = await client.post(
+                    HTTP_URL, json={"events": event_rows_json, "data": data_rows_json}
                 )
-                logger.info(f"server response: {server_response.status_code}")
+                resp.raise_for_status()
 
-                server_response.raise_for_status()
-                logger.info("ack")
-                acknowledgement: dict[str, list[dict[str, str | int]]] = (
-                    server_response.json()
+                ack = resp.json()
+                database.update_sent_data(cursor, [row["id"] for row in ack["data"]])
+                database.update_sent_events(
+                    cursor, [row["id"] for row in ack["events"]]
                 )
-                logger.info(acknowledgement)
-                database.update_sent_rows(cursor, acknowledgement["updated"])
                 db.commit()
-        except Exception as e:
-            logger.exception("FAILED TO BACKUP")
-            database.log_event(f"FAILED TO BACKUP! {e}", logging.WARNING)
-        finally:
+
+            except Exception as e:
+                logger.exception("FAILED TO BACKUP")
+                database.log_event(f"FAILED TO BACKUP! {e}", logging.WARNING)
+                db.rollback()
             await asyncio.sleep(DATABASE_BACKUP_DEBOUNCE)
+
+    finally:
+        await client.aclose()
 
 
 async def initialize_server_connection(ctx: AppContext):

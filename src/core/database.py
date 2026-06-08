@@ -1,5 +1,4 @@
 import sqlite3
-import time
 import logging
 import os
 import multiprocessing
@@ -30,9 +29,7 @@ def log_event(message: str, level: int) -> None:
         level (LogSeverity): The severity of the event, advised to use loggings. Levels
     """
 
-    new_entry: ProbeEvent = ProbeEvent(
-        timestamp=round(time.time(), 2), message=message, severity=level
-    )
+    new_entry: ProbeEvent = ProbeEvent(message=message, severity=level)
 
     database_queue.put(new_entry)
 
@@ -58,12 +55,13 @@ def process_sensor_data(cursor: sqlite3.Cursor, d: ProbeData) -> None:
     """
     cursor.execute(
         """
-    INSERT INTO data (session_id, timestamp, sequence, humidity, pressure, voc, wind_speed, co2, precipitation)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO data (id, timestamp, session_id, sequence, humidity, pressure, voc, wind_speed, co2, precipitation)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """,
         (
-            SESSION_ID,
+            d.record_id,
             d.timestamp,
+            SESSION_ID,
             d.sequence,
             d.humidity,
             d.pressure,
@@ -85,16 +83,16 @@ def process_log_event(cursor: sqlite3.Cursor, d: ProbeEvent) -> None:
     """
     cursor.execute(
         """
-    INSERT INTO events (session_id, timestamp, message, severity)
-    VALUES (?, ?, ?, ?)
+    INSERT INTO events (id, timestamp, session_id,  message, severity)
+    VALUES (?, ?, ?, ?, ?)
     """,
-        (SESSION_ID, d.timestamp, d.message, d.severity),
+        (d.record_id, d.timestamp, SESSION_ID, d.message, d.severity),
     )
 
 
-def fetch_unsent_rows(cursor: sqlite3.Cursor) -> list:
+def fetch_unsent_events(cursor: sqlite3.Cursor) -> list:
     """
-    Grabs all of the unsent rows to be uploaded, maxing out at 100 rows
+    Grabs all of the unsent rows of events to be uploaded, maxing out at 100 rows
 
     Arguments:
         cursor (sqlite3.Cursor): The SQLite cursor to use
@@ -105,7 +103,33 @@ def fetch_unsent_rows(cursor: sqlite3.Cursor) -> list:
 
     cursor.execute(
         """
-        SELECT session_id, timestamp, sequence,
+        SELECT id, timestamp, session_id, message, severity
+        FROM events
+        WHERE sent = 0
+        LIMIT ?;
+    """,
+        (DATABASE_UPLOAD_BATCH_SIZE,),
+    )
+
+    rows: list[Any] = cursor.fetchall()
+
+    return rows
+
+
+def fetch_unsent_data(cursor: sqlite3.Cursor) -> list:
+    """
+    Grabs all of the unsent rows of probe data to be uploaded, maxing out at 100 rows
+
+    Arguments:
+        cursor (sqlite3.Cursor): The SQLite cursor to use
+
+    Returns:
+        list: The list of rows to be uploaded
+    """
+
+    cursor.execute(
+        """
+        SELECT id, timestamp, session_id, sequence,
             temperature, humidity, pressure, voc,
             wind_speed, co2, precipitation
             FROM data
@@ -120,19 +144,37 @@ def fetch_unsent_rows(cursor: sqlite3.Cursor) -> list:
     return rows
 
 
-def update_sent_rows(
+def update_sent_events(
     cursor: sqlite3.Cursor, sent_rows: list[dict[str, str | int]]
 ) -> None:
     """
-    Updates the rows from the server acknowledgment to be sent
+    Updates the rows of data from the server acknowledgment
 
     Arguments:
         cursor (sqlite3.Cursor): The SQLite cursor to use
         sent_rows (list[dict[str, str | int]]): The rows that were updated
     """
-    cursor.executemany(
-        "UPDATE data SET sent = 1 WHERE session_id = :session_id AND sequence = :sequence",
-        sent_rows,  # ?? i guess bro
+    cursor.execute(
+        f"UPDATE events SET sent = 1 WHERE id IN ({','.join('?' * len(sent_rows))})",
+        sent_rows,
+    )
+
+    return
+
+
+def update_sent_data(
+    cursor: sqlite3.Cursor, sent_rows: list[dict[str, str | int]]
+) -> None:
+    """
+    Updates the rows of data from the server acknowledgment
+
+    Arguments:
+        cursor (sqlite3.Cursor): The SQLite cursor to use
+        sent_rows (list[dict[str, str | int]]): The rows that were updated
+    """
+    cursor.execute(
+        f"UPDATE data SET sent = 1 WHERE id IN ({','.join('?' * len(sent_rows))})",  # Ahh yes this works for some reason!
+        sent_rows,
     )
 
     return
@@ -158,9 +200,12 @@ def initialize_database() -> None:
 
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS data (
-                session_id TEXT NOT NULL,
+                id TEXT PRIMARY KEY,
                 timestamp REAL NOT NULL,
+
+                session_id TEXT NOT NULL,
                 sequence INTEGER NOT NULL,
+
 
                 temperature REAL,
                 humidity REAL,
@@ -172,7 +217,7 @@ def initialize_database() -> None:
 
                 sent INTEGER DEFAULT 0,
 
-                PRIMARY KEY (session_id, sequence)
+                UNIQUE(session_id, sequence)
             )
         """)
 
@@ -182,17 +227,21 @@ def initialize_database() -> None:
 
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS events (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                session_id TEXT NOT NULL,
+                id TEXT PRIMARY KEY,
                 timestamp REAL NOT NULL,
 
+                session_id TEXT NOT NULL,
+
                 message TEXT NOT NULL,
-                severity TEXT NOT NULL,
+                severity INTEGER NOT NULL,
 
                 sent INTEGER DEFAULT 0
             )
         """)
 
+        cursor.execute("""
+            CREATE INDEX IF NOT EXISTS idx_data_unsent ON events (sent) WHERE sent = 0;
+        """)
         db.commit()
         db.close()
     except sqlite3.OperationalError as e:

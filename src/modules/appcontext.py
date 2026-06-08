@@ -1,5 +1,7 @@
 import threading
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+import uuid_utils as uuid
+import time
 
 
 @dataclass(slots=True)
@@ -12,19 +14,22 @@ class AppContext:
 
 @dataclass(slots=True)
 class ProbeEvent:
-    timestamp: float
     message: str
     severity: int
+
+    record_id: str = field(default_factory=lambda: str(uuid.uuid7()))
+    timestamp: float = field(default_factory=time.time)
 
 
 @dataclass(slots=True)
 class ProbeData:
-    timestamp: float
     sequence: int
-
     humidity: float | None
     pressure: float | None
     voc: float | None
     wind_speed: float | None
     co2: float | None
     precipitation: float | None
+
+    record_id: str = field(default_factory=lambda: str(uuid.uuid7()))
+    timestamp: float = field(default_factory=time.time)

@@ -1,6 +1,5 @@
 import types
 import time
-
 import logging
 
 from sensors import bme280
@@ -123,7 +122,6 @@ def read_sensor_loop(ctx: AppContext):
                 newest_map.update(function())
 
         new_data: ProbeData = ProbeData(
-            timestamp=time.time(),
             sequence=current_sequence_number,
             humidity=newest_map.get("humidity"),
             pressure=newest_map.get("pressure"),

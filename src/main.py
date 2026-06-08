@@ -34,7 +34,7 @@ def main():
 
     running_context = AppContext(
         latest_reading=ProbeData(
-            0, 0, None, None, None, None, None, None
+            0, None, None, None, None, None, None
         ),  # Should never get read?
         websocket_active=False,
         thread_shutdown=threading.Event(),

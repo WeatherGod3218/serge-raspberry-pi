@@ -1,6 +1,6 @@
 import os
 import logging
-import uuid
+import uuid_utils as uuid
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -54,8 +54,8 @@ SESSION_ID: str = _generate_session_id()
 SEND_DATA_TO_SERVER: bool = True
 
 WEBSOCKET_RECONNECT_DEBOUNCE: int = 20
-DATABASE_BACKUP_DEBOUNCE: int = 20
-DATABASE_UPLOAD_BATCH_SIZE: int = 100
+DATABASE_BACKUP_DEBOUNCE: int = 3
+DATABASE_UPLOAD_BATCH_SIZE: int = 150
 
 HTTP_URL: str | None = _get_env_variable("HTTP_URL")
 WS_URL: str | None = _get_env_variable("WS_URL")
