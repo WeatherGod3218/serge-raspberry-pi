@@ -2,14 +2,7 @@ import threading
 from dataclasses import dataclass, field
 import uuid_utils as uuid
 import time
-
-
-@dataclass(slots=True)
-class AppContext:
-    latest_reading: ProbeData
-    websocket_active: bool
-    thread_shutdown: threading.Event
-    reading_updated: threading.Event
+import asyncio
 
 
 @dataclass(slots=True)
@@ -33,3 +26,17 @@ class ProbeData:
 
     record_id: str = field(default_factory=lambda: str(uuid.uuid7()))
     timestamp: float = field(default_factory=time.time)
+
+
+@dataclass(slots=True)
+class AppContext:
+    event_loop: asyncio.AbstractEventLoop
+
+    server_connected: bool = False
+    server_update: asyncio.Event = asyncio.Event()
+
+    laptop_connected: bool = False
+    laptop_update: asyncio.Event = asyncio.Event()
+
+    latest_reading: ProbeData | None = None
+    thread_shutdown: threading.Event = threading.Event()

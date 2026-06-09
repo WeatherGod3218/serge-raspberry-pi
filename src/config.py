@@ -58,7 +58,10 @@ DATABASE_BACKUP_DEBOUNCE: int = 3
 DATABASE_UPLOAD_BATCH_SIZE: int = 150
 
 HTTP_URL: str | None = _get_env_variable("HTTP_URL")
-WS_URL: str | None = _get_env_variable("WS_URL")
+
+SERVER_WS_URL: str | None = _get_env_variable("SERVER_WS_URL")
+LAPTOP_WS_URL: str | None = _get_env_variable("LAPTOP_WS_URL")
+
 SERVER_API_KEY: str | None = _get_env_variable("SERVER_API_KEY")
 
 # Database Settings

@@ -4,7 +4,7 @@ import logging
 
 from sensors import bme280
 from config import SENSOR_FAIL_SHUTDOWN_LIMIT
-from core import database
+from modules import database
 from modules.appcontext import AppContext, ProbeData
 
 LOADED_SENSORS: list[types.ModuleType] = [bme280]
@@ -132,7 +132,9 @@ def read_sensor_loop(ctx: AppContext):
         )
 
         ctx.latest_reading = new_data
-        ctx.reading_updated.set()
+
+        ctx.event_loop.call_soon_threadsafe(ctx.server_update.set)
+        ctx.event_loop.call_soon_threadsafe(ctx.laptop_update.set)
 
         database.log_sensor_data(new_data)
         current_sequence_number += 1
