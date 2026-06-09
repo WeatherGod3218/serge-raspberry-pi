@@ -8,15 +8,17 @@ services:
       - "8000:8000"
     env_file:
       - .env
-    volumes:
-      - ./data:/src/data
     stop_grace_period: 30s
     networks:
       - serge-external-network
-    # devices:
-    #   - /dev/i2c-1:/dev/i2c-1
-    # environment:
-    #   - BLINKA_RASPBERRY_PI=1
+    privileged: true
+    devices:
+      - "/dev/i2c-1:/dev/i2c-1"
+      - "/dev/gpiochip4:/dev/gpiochip4"
+    volumes:
+      - /sys:/sys
+      - /proc/device-tree:/proc/device-tree
+      - ./data:/src/data
 
 networks:
   serge-external-network:

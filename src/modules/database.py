@@ -55,14 +55,15 @@ def process_sensor_data(cursor: sqlite3.Cursor, d: ProbeData) -> None:
     """
     cursor.execute(
         """
-    INSERT INTO data (id, timestamp, session_id, sequence, humidity, pressure, voc, wind_speed, co2, precipitation)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO data (id, timestamp, session_id, sequence, temperature, humidity, pressure, voc, wind_speed, co2, precipitation)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """,
         (
             d.record_id,
             d.timestamp,
             SESSION_ID,
             d.sequence,
+            d.temperature,
             d.humidity,
             d.pressure,
             d.voc,

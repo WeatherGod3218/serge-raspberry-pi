@@ -1,19 +1,20 @@
 from logging import getLogger, Logger
-import random
 
-# import board
+import board
 import busio
 from adafruit_bme280 import basic as BME280
-
+from config import SEA_LEVEL_PRESSURE
 
 logger: Logger = getLogger(__name__)
 
-I2C: busio.I2C
-sensor: BME280.Adafruit_BME280_I2C
+sensor: BME280.Adafruit_BME280_I2C | None = None
+I2C: busio.I2C | None = None
 
 
-current_pressure: float = 50
-current_humidity: float = 60
+current_pressure: float = 0
+current_humidity: float = 0
+current_temperature: float = 0
+
 # def get_temp() -> float:
 #     return "%0.1f" % sensor.temperature
 
@@ -46,11 +47,23 @@ def get_humidity_test() -> dict[str, float]:
     return {"humidity": current_humidity}
 
 
+def get_temperature_test() -> dict[str, float]:
+    """
+    Temp function that returns the temperature
+
+    Returns:
+        dict[str, int]: The temperature recorded with the key "temperature"
+    """
+    global current_temperature
+
+    return {"temperature": current_temperature}
+
+
 def get_read_functions():
     """
     Returns the list of functions to be processed
     """
-    return [get_pressure_test, get_humidity_test]
+    return [get_pressure_test, get_humidity_test, get_temperature_test]
 
 
 def update() -> None:
@@ -58,10 +71,12 @@ def update() -> None:
     Attempts to update the BME280 sensors' pressure and humidity.
 
     """
-    global current_humidity, current_pressure
+    global sensor, current_humidity, current_pressure, current_temperature
 
-    current_humidity = random.randint(20, 60)
-    current_pressure = random.randint(20, 60)
+    logger.info(f"Current Sensor: {sensor}")
+    current_humidity = sensor.humidity
+    current_pressure = sensor.pressure
+    current_temperature = sensor.temperature
 
 
 def init_sensor() -> bool:
@@ -71,12 +86,12 @@ def init_sensor() -> bool:
     Returns:
         bool: If the sensor was able to successfully boot or not
     """
-    # global I2C, SENSOR
+    global I2C, sensor
 
-    # logger.info("Attempting to Initialize the BME280")
-    # I2C = busio.I2C(board.SCL, board.SDA)
-    # sensor = BME280.Adafruit_BME280_I2C(I2C)
+    logger.info("Attempting to Initialize the BME280")
+    I2C = busio.I2C(board.SCL, board.SDA)
+    sensor = BME280.Adafruit_BME280_I2C(I2C)
 
-    # sensor.sea_level_pressure = SEA_LEVEL_PRESSURE
-    # logger.info("BME280 Initialized!")
+    sensor.sea_level_pressure = SEA_LEVEL_PRESSURE
+    logger.info(f"BME280 Initialized! {sensor}")
     return True

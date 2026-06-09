@@ -17,6 +17,7 @@ class ProbeEvent:
 @dataclass(slots=True)
 class ProbeData:
     sequence: int
+    temperature: float | None
     humidity: float | None
     pressure: float | None
     voc: float | None

@@ -67,8 +67,10 @@ serge-raspberry-pi also has support for Docker Compose, a extended version of do
 
 (This is a really cool thing! If you use docker often, check it out!)
 ```
-    docker compose up --build
+    docker compose up --build0
 ```
+
+sudo apt update && sudo apt install -y liblgpio-dev
 
 ### Testing
 

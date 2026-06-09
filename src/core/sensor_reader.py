@@ -3,7 +3,7 @@ import time
 import logging
 
 from sensors import bme280
-from config import SENSOR_FAIL_SHUTDOWN_LIMIT
+from config import SENSOR_FAIL_SHUTDOWN_LIMIT, SENSOR_READING_DEBOUNCE_TIME
 from modules import database
 from modules.appcontext import AppContext, ProbeData
 
@@ -16,7 +16,7 @@ logger: logging.Logger = logging.getLogger(__name__)
 current_sequence_number: int = 1
 
 
-def process_failed_sensor(sensor: types.ModuleType) -> None:
+def process_failed_sensor(sensor: types.ModuleType, e: Exception) -> None:
     """
     Processes a failed sensor, removing it from running sensors if above the configurated SENSOR_FAIL_SHUTDOWN_LIMIT
 
@@ -46,7 +46,7 @@ def process_failed_sensor(sensor: types.ModuleType) -> None:
     )
 
     database.log_event(
-        f"SENSOR {sensor.__name__} HAS FAILED {failed_sensors[sensor]} TIMES! SENSOR WILL CONTINUE TO BE PROCESSED",
+        f"SENSOR {sensor.__name__} HAS FAILED {failed_sensors[sensor]} TIMES! SENSOR WILL CONTINUE TO BE PROCESSED: {e}",
         logging.WARNING,
     )
 
@@ -65,7 +65,7 @@ def update_sensor(sensor: types.ModuleType) -> Exception | None:
         return None
     except Exception as e:
         logger.warning(f"SENSOR {sensor.__name__} FAILED WITH ERROR: {e}")
-        process_failed_sensor(sensor)
+        process_failed_sensor(sensor, e)
         return e
 
 
@@ -78,15 +78,28 @@ def initalize_sensors() -> None:
     logger.info("Attempting to Load Sensors!")
 
     for sensor in LOADED_SENSORS:
+        if not hasattr(sensor, "init_sensor"):
+            logger.warning(
+                f"SENSOR {sensor.__name__} DOES NOT HAVE AN update FUNCTION! PASSING SENSOR FROM LOADING"
+            )
+            continue
+
         if not hasattr(sensor, "update"):
             logger.warning(
                 f"SENSOR {sensor.__name__} DOES NOT HAVE AN update FUNCTION! PASSING SENSOR FROM LOADING"
             )
             continue
+
         if not hasattr(sensor, "get_read_functions"):
             logger.warning(
                 f"SENSOR {sensor.__name__} DOES NOT HAVE get_read_functions FUNCTION! PASSING SENSOR FROM LOADING"
             )
+            continue
+
+        try:
+            sensor_map[sensor] = sensor.init_sensor()
+        except Exception:
+            logger.exception(f"SENSOR {sensor.__name__} FAILED TO INITALIZE!")
             continue
 
         sensor_map[sensor] = sensor.get_read_functions()
@@ -123,6 +136,7 @@ def read_sensor_loop(ctx: AppContext):
 
         new_data: ProbeData = ProbeData(
             sequence=current_sequence_number,
+            temperature=newest_map.get("temperature"),
             humidity=newest_map.get("humidity"),
             pressure=newest_map.get("pressure"),
             voc=newest_map.get("voc"),
@@ -139,4 +153,4 @@ def read_sensor_loop(ctx: AppContext):
         database.log_sensor_data(new_data)
         current_sequence_number += 1
 
-        time.sleep(1)
+        time.sleep(SENSOR_READING_DEBOUNCE_TIME)

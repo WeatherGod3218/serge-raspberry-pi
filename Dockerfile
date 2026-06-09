@@ -1,39 +1,32 @@
+FROM ghcr.io/astral-sh/uv:python3.14-bookworm AS base
+WORKDIR /src
 
-FROM ghcr.io/astral-sh/uv:python3.14-alpine AS base
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    make \
+    swig \
+    python3-dev \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
-
-# RUN apk add --no-cache \
-#     gcc \
-#     musl-dev \
-#     linux-headers \
-#     i2c-tools \
-#     libgpiod \
-#     libgpiod-dev
+RUN wget -q https://abyz.me.uk/lg/lg.zip && \
+    unzip lg.zip && \
+    cd lg && \
+    make && \
+    make install && \
+    ldconfig && \
+    cd .. && rm -rf lg lg.zip
 
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen
 
-# FROM base AS docbuilder
+FROM ghcr.io/astral-sh/uv:python3.14-bookworm
 
-# WORKDIR /appdocs
+COPY --from=base /usr/local/lib/liblgpio.so* /usr/local/lib/
+RUN ldconfig
 
-# COPY mkdocs.yml .
-# COPY docs ./docs
-# COPY src ./src
-
-# WORKDIR /app
-
-# RUN uv run zensical build --config-file /appdocs/mkdocs.yml
-
-FROM ghcr.io/astral-sh/uv:python3.14-alpine
-
-# RUN apk add --no-cache libgpiod i2c-tools
-
-COPY --from=base /app/.venv /src/.venv
+COPY --from=base /src/.venv /src/.venv
 COPY src /src
-# COPY --from=docbuilder /appdocs/site /app/docs
 
 WORKDIR /src
-
 CMD ["uv", "run", "python", "main.py"]

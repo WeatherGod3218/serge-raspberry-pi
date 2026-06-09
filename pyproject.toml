@@ -9,6 +9,7 @@ dependencies = [
     "adafruit-circuitpython-bme280>=2.6.32",
     "dotenv>=0.9.9",
     "httpx>=0.28.1",
+    "lgpio>=0.2.2.0",
     "sgp30>=0.1.6",
     "uuid-utils>=0.16.0",
     "w1thermsensor>=2.3.0",
