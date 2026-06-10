@@ -1,7 +1,10 @@
-# Serge Raspberry Pi ![Static Badge](https://img.shields.io/badge/weather-%23b16ded?style=flat&logo=github&logoColor=black&labelColor=0%2C0%2C0&link=https%3A%2F%2Fgithub.com%2FweatherGod3218%2F)
+# Zephyr ![Static Badge](https://img.shields.io/badge/weather-%23b16ded?style=flat&logo=github&logoColor=black&labelColor=0%2C0%2C0&link=https%3A%2F%2Fgithub.com%2FweatherGod3218%2F)
 
-Raspberry Pi software for collecting and sending data on SERGE's Probe
+## What is Zephyr?
 
+Zephyr is the SERGE team's second mobile deployment probe. Being the successor to the Wisconsin Mobile Storm Probe, Zephyr aims to end all of the issues that bloomed with the original.
+Some of the notable editions is the new all metal design, leading to an extremely more weather resilient probe. It also features the addition of a SEN-15901 Weather Station for Wind Speed, Wind Direction and Precipitation
+The data from this probe is then sent to SERGE's servers on the fly in order to backup the data collected.
 
 ## Local Development
 
@@ -38,7 +41,7 @@ __uv add --group $GROUP $PACKAGE__: Same as UV add, but adds the package to the 
 
 
 ## Project Setup
-1. Run: `uv venv .venv --python 3.14`
+1. Run: `uv venv .venv --python 3.14.5`
 2. Activate the virtual environment
     * Bash: `source .venv/bin/activate`
     * Fish: `source .venv/bin/activate.fish`
@@ -54,20 +57,20 @@ This app is containerized through a docker file.
 
 1. Build the docker file
 ```
-    docker build -t serge-raspberry-pi .
+    docker build -t zephyr .
 ```
 2. Run the newly built docker on port 8000
 ```
-    docker run -p 8000:8000 serge-raspberry-pi
+    docker run -p 8000:8000 zephyr
 ```
 
 ## Docker Compose
 
-serge-raspberry-pi also has support for Docker Compose, a extended version of docker that simplifies the steps.
+the zephyr application also has support for Docker Compose, a extended version of docker that simplifies the steps.
 
 (This is a really cool thing! If you use docker often, check it out!)
 ```
-    docker compose up --build0
+    docker compose up --build
 ```
 
 sudo apt update && sudo apt install -y liblgpio-dev
