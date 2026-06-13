@@ -15,19 +15,10 @@ current_pressure: float = 0
 current_humidity: float = 0
 current_temperature: float = 0
 
-# def get_temp() -> float:
-#     return "%0.1f" % sensor.temperature
 
-# def get_humidity() -> float:
-#     return "%0.1f" % sensor.humidity
-
-# def get_pressure() -> float:
-#     return "%0.1f" % sensor.pressure
-
-
-def get_pressure_test() -> dict[str, float]:
+def get_pressure() -> dict[str, float]:
     """
-    Temp function that returns a random pressure amount
+    Returns the latest pressure reading from the sensor safely
 
     ...Seems like you couldn't handle the... PRESSUREEEEEEEEEEEEE!!!!!!!!!!!!
 
@@ -37,9 +28,9 @@ def get_pressure_test() -> dict[str, float]:
     return {"pressure": current_pressure}
 
 
-def get_humidity_test() -> dict[str, float]:
+def get_humidity() -> dict[str, float]:
     """
-    Temp function that returns a random humidity amount
+    Returns the latest humidty reading from the sensor safely
 
     Returns:
         dict[str, int]: The humidty recorded with the key "humidity"
@@ -47,9 +38,9 @@ def get_humidity_test() -> dict[str, float]:
     return {"humidity": current_humidity}
 
 
-def get_temperature_test() -> dict[str, float]:
+def get_temperature() -> dict[str, float]:
     """
-    Temp function that returns the temperature
+    Returns the latest temperature reading from the sensor safely
 
     Returns:
         dict[str, int]: The temperature recorded with the key "temperature"
@@ -63,25 +54,32 @@ def get_read_functions():
     """
     Returns the list of functions to be processed
     """
-    return [get_pressure_test, get_humidity_test, get_temperature_test]
+    return [get_pressure, get_humidity, get_temperature]
 
 
-def update() -> None:
+def update(_) -> None:
     """
     Attempts to update the BME280 sensors' pressure and humidity.
 
+    Arguments:
+        ctx (AppContext): The running app context
     """
     global sensor, current_humidity, current_pressure, current_temperature
 
-    logger.info(f"Current Sensor: {sensor}")
+    if not sensor:
+        raise RuntimeError("BME280 was not initalized!")
+
     current_humidity = sensor.humidity
     current_pressure = sensor.pressure
     current_temperature = sensor.temperature
 
 
-def init_sensor() -> bool:
+def init_sensor(_) -> bool:
     """
     Attempts to initalize the BME280 sensor.
+
+    Arguments:
+        ctx (AppContext): The running app context
 
     Returns:
         bool: If the sensor was able to successfully boot or not

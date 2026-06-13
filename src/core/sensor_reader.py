@@ -2,12 +2,12 @@ import types
 import time
 import logging
 
-from sensors import bme280
+from sensors import bme280, sgp30
 from config import SENSOR_FAIL_SHUTDOWN_LIMIT, SENSOR_READING_DEBOUNCE_TIME
 from modules import database
 from modules.appcontext import AppContext, ProbeData
 
-LOADED_SENSORS: list[types.ModuleType] = [bme280]
+LOADED_SENSORS: list[types.ModuleType] = [bme280, sgp30]
 
 sensor_map: dict[types.ModuleType, list[types.FunctionType]] = {}
 failed_sensors: dict[types.ModuleType, int] = {}
@@ -51,7 +51,7 @@ def process_failed_sensor(sensor: types.ModuleType, e: Exception) -> None:
     )
 
 
-def update_sensor(sensor: types.ModuleType) -> Exception | None:
+def update_sensor(ctx, sensor: types.ModuleType) -> Exception | None:
     """
     Processes a sensor, safely updating attributes to be read
 
@@ -61,7 +61,7 @@ def update_sensor(sensor: types.ModuleType) -> Exception | None:
     global sensor_map, failed_sensors, logger
 
     try:
-        sensor.update()
+        sensor.update(ctx)
         return None
     except Exception as e:
         logger.warning(f"SENSOR {sensor.__name__} FAILED WITH ERROR: {e}")
@@ -69,7 +69,7 @@ def update_sensor(sensor: types.ModuleType) -> Exception | None:
         return e
 
 
-def initalize_sensors() -> None:
+def initalize_sensors(ctx) -> None:
     """
     Loads all sensors from the LOADED SENSORS, ensuring that both an "update" and "get_read_functions" exists
     """
@@ -97,7 +97,7 @@ def initalize_sensors() -> None:
             continue
 
         try:
-            sensor_map[sensor] = sensor.init_sensor()
+            sensor_map[sensor] = sensor.init_sensor(ctx)
         except Exception:
             logger.exception(f"SENSOR {sensor.__name__} FAILED TO INITALIZE!")
             continue
@@ -125,7 +125,7 @@ def read_sensor_loop(ctx: AppContext):
         newest_map: dict[str, float] = {}
 
         for sensor, func_list in list(sensor_map.items()):
-            error_updating_sensor: Exception | None = update_sensor(sensor)
+            error_updating_sensor: Exception | None = update_sensor(ctx, sensor)
 
             if error_updating_sensor:
                 logger.warning(f"{error_updating_sensor}")
@@ -145,6 +145,9 @@ def read_sensor_loop(ctx: AppContext):
             precipitation=newest_map.get("precipitation"),
         )
 
+        logger.info(
+            f"Reading: \nTemperature: {newest_map.get('temperature')}\n Humidity: {newest_map.get('humidity')}\n Pressure: {newest_map.get('pressure')}\n VOC:{newest_map.get('voc')}\n CO2:{newest_map.get('co2')}"
+        )
         ctx.latest_reading = new_data
 
         ctx.event_loop.call_soon_threadsafe(ctx.server_update.set)

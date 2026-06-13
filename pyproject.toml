@@ -7,6 +7,7 @@ requires-python = ">=3.14"
 dependencies = [
     "adafruit-blinka>=9.1.0",
     "adafruit-circuitpython-bme280>=2.6.32",
+    "adafruit-circuitpython-sgp30>=3.0.16",
     "dotenv>=0.9.9",
     "httpx>=0.28.1",
     "lgpio>=0.2.2.0",

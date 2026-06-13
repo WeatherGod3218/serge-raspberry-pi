@@ -26,7 +26,6 @@ def shutdown_handler(signum, frame):
         return
 
     running_context.thread_shutdown.set()
-
     return
 
 
@@ -44,7 +43,7 @@ def main():
 
     logger.info("Starting Initalization Sequence!")
 
-    sensor_reader.initalize_sensors()
+    sensor_reader.initalize_sensors(ctx=running_context)
     database.initialize_database()
 
     database_thread: threading.Thread = threading.Thread(
@@ -102,6 +101,8 @@ def main():
 
     if websocket_thread:
         logger.info("Stopping websocket thread!")
+        running_context.server_update.set()
+        running_context.laptop_update.set()
         websocket_thread.join()
         logger.info("websocket thread stopped.")
 

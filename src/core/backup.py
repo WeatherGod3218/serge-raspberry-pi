@@ -40,15 +40,18 @@ async def backup_data(ctx: AppContext):
 
     client = httpx.AsyncClient(headers=headers, timeout=httpx.Timeout(10.0))
 
+    backup_complete: bool = False
     try:
-        while not ctx.thread_shutdown.is_set():
+        while not ctx.thread_shutdown.is_set() and not backup_complete:
             event_rows: list[Any] = database.fetch_unsent_events(cursor)
             data_rows: list[Any] = database.fetch_unsent_data(cursor)
 
             if (not event_rows) and (not data_rows):
+                backup_complete = True
                 await asyncio.sleep(DATABASE_BACKUP_DEBOUNCE)
                 continue
 
+            backup_complete = False
             event_rows_json = [dict(r) for r in event_rows]
             data_rows_json = [dict(r) for r in data_rows]
 

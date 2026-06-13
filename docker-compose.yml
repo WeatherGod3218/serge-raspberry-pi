@@ -1,9 +1,9 @@
 ---
 
 services:
-  serge-raspberry-pi:
+  zephyr-probe:
     build: .
-    container_name: Serge-Raspberry-Pi
+    container_name: Zephyr-Probe
     ports:
       - "8000:8000"
     env_file:

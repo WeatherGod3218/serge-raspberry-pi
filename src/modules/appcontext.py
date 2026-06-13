@@ -36,7 +36,6 @@ class ProbeData:
         temperature (float | None): The temperature reading, in Celcius
         humidity (float | None): The humidity reading, in Relative Humidity (percentage of vapor -> air)
         pressure (float | None): The pressure reading, in Barometric Pressure
-        pressure (float | None): The pressure reading, in Barometric Pressure
         voc (float | None): The tVOC reading, in Parts Per Billion
         wind_speed (float | None): The Wind Speed, in GOD knows what!
         co2 (float | None): The eCO2, in Parts Per Million

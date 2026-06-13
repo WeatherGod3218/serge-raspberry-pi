@@ -52,6 +52,7 @@ async def initalize_laptop_connection(ctx: AppContext):
 
                     data: dict[str, float | None] = {
                         "timestamp": reading.timestamp,
+                        "temperature": reading.temperature,
                         "co2": reading.co2,
                         "humidity": reading.humidity,
                         "precipitation": reading.precipitation,
@@ -112,6 +113,7 @@ async def initialize_server_connection(ctx: AppContext):
 
                     data: dict[str, float | None] = {
                         "timestamp": reading.timestamp,
+                        "temperature": reading.temperature,
                         "co2": reading.co2,
                         "humidity": reading.humidity,
                         "precipitation": reading.precipitation,

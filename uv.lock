@@ -71,6 +71,19 @@ wheels = [
 ]
 
 [[package]]
+name = "adafruit-circuitpython-sgp30"
+version = "3.0.16"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "adafruit-blinka" },
+    { name = "adafruit-circuitpython-busdevice" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/92/2d/3e6ef0d9b7b390189812064b84226ae9d5b27bf42d39a1a250724a13f318/adafruit_circuitpython_sgp30-3.0.16.tar.gz", hash = "sha256:69b19c44e1e0b5a389cd3f923469888b2529c571c2335a37f155c0bb8a95462d", size = 24238, upload-time = "2026-04-23T21:06:22.936Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/82/71/0bd5dc2559338cac8a59a90a73a804e541a2fb116261418a0aeb26f7b6e5/adafruit_circuitpython_sgp30-3.0.16-py3-none-any.whl", hash = "sha256:7d17679967cdb41cfa88172d7ad34bb2b7e8a36a6cf6c63623fbd5787456e01e", size = 6430, upload-time = "2026-04-23T21:06:21.847Z" },
+]
+
+[[package]]
 name = "adafruit-circuitpython-typing"
 version = "1.12.3"
 source = { registry = "https://pypi.org/simple" }
@@ -491,6 +504,7 @@ source = { virtual = "." }
 dependencies = [
     { name = "adafruit-blinka" },
     { name = "adafruit-circuitpython-bme280" },
+    { name = "adafruit-circuitpython-sgp30" },
     { name = "dotenv" },
     { name = "httpx" },
     { name = "lgpio" },
@@ -514,6 +528,7 @@ tests = [
 requires-dist = [
     { name = "adafruit-blinka", specifier = ">=9.1.0" },
     { name = "adafruit-circuitpython-bme280", specifier = ">=2.6.32" },
+    { name = "adafruit-circuitpython-sgp30", specifier = ">=3.0.16" },
     { name = "dotenv", specifier = ">=0.9.9" },
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "lgpio", specifier = ">=0.2.2.0" },
